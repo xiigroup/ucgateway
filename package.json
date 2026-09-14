@@ -1,0 +1,27 @@
+{
+  "name": "@xiigroup/uc-gateway-sdk",
+  "version": "1.0.0",
+  "description": "Official Integration SDK for XII Group UC Gateway (WhatsApp & SMS)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "start:express": "node examples/express-bot.js"
+  },
+  "keywords": ["whatsapp", "sms", "uc-gateway", "xiigroup", "sdk"],
+  "author": "Sipho Selabe <sg.selabe@xiigroup.co.za>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3"
+  }
+}
