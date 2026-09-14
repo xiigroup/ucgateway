@@ -1,0 +1,159 @@
+openapi: 3.0.3
+info:
+  title: XII Group UC Gateway API
+  description: Unified, stateful HTTP interface for WhatsApp and SMS communications.
+  version: 1.0.0
+servers:
+  - url: https://uc-api.xiigroup.co.za
+    description: Production Gateway
+paths:
+  /:
+    post:
+      summary: Dispatch Message or Action
+      operationId: dispatchMessage
+      security:
+        - BasicAuth: []
+      parameters:
+        - in: header
+          name: HTTP_API_VERSION
+          required: false
+          schema:
+            type: string
+            default: v1.0
+          description: API version header (defaults to latest if omitted)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/WhatsAppTextPayload'
+                - $ref: '#/components/schemas/WhatsAppTemplatePayload'
+                - $ref: '#/components/schemas/WhatsAppLocationRequestPayload'
+                - $ref: '#/components/schemas/SmsPayload'
+      responses:
+        '200':
+          description: Successful execution
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  results:
+                    type: object
+        '400':
+          description: Bad Request / Validation Failure
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate Limit Exceeded
+        '500':
+          description: Internal Gateway Error
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    WhatsAppTextPayload:
+      type: object
+      required: [endpoint, action, type, nid, to, body]
+      properties:
+        endpoint:
+          type: string
+          enum: [whatsapp]
+        action:
+          type: string
+          enum: [send]
+        type:
+          type: string
+          enum: [text]
+        nid:
+          type: integer
+          example: 12345678
+        to:
+          type: string
+          example: "27716629021"
+        body:
+          type: string
+          example: "Hello from UC Gateway!"
+        msg_id:
+          type: string
+          description: Optional message ID for contextual replies
+    WhatsAppTemplatePayload:
+      type: object
+      required: [endpoint, action, type, nid, to, name, language]
+      properties:
+        endpoint:
+          type: string
+          enum: [whatsapp]
+        action:
+          type: string
+          enum: [send]
+        type:
+          type: string
+          enum: [template]
+        nid:
+          type: integer
+          example: 12345678
+        to:
+          type: string
+          example: "27716629021"
+        name:
+          type: string
+          example: "hello"
+        language:
+          type: string
+          example: "en"
+        header:
+          type: array
+          items:
+            type: object
+        body:
+          type: array
+          items:
+            type: object
+    WhatsAppLocationRequestPayload:
+      type: object
+      required: [endpoint, action, type, nid, to, body]
+      properties:
+        endpoint:
+          type: string
+          enum: [whatsapp]
+        action:
+          type: string
+          enum: [send]
+        type:
+          type: string
+          enum: [location_request]
+        nid:
+          type: integer
+          example: 12345678
+        to:
+          type: string
+          example: "27716629021"
+        body:
+          type: string
+          example: "Please share your location"
+    SmsPayload:
+      type: object
+      required: [endpoint, action, nid, to, body]
+      properties:
+        endpoint:
+          type: string
+          enum: [sms]
+        action:
+          type: string
+          enum: [send]
+        nid:
+          type: integer
+          example: 12345678
+        to:
+          type: string
+          example: "27670826044"
+        body:
+          type: string
+          example: "sending sms"
