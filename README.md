@@ -372,7 +372,6 @@ Incoming webhooks include the following authentication headers for verification:
 ### Signature Algorithm
 
 The gateway signs the **entire raw JSON request body** using HMAC SHA-256 with your portal shared secret:
-
 $$\text{Signature} = \text{HMAC-SHA256}(\text{SharedSecret}, \text{RawRequestBody})$$
 
 ### Implementation Examples
