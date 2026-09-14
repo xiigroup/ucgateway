@@ -47,12 +47,86 @@ class UcGatewayClient
             'to' => $to,
             'body' => $body
         ];
-
-        if ($msgId !== null) {
-            $payload['msg_id'] = $msgId;
-        }
+        if ($msgId !== null) $payload['msg_id'] = $msgId;
 
         return $this->request($payload);
+    }
+
+    public function sendWhatsAppTemplate(int $nid, string $to, string $name, string $language = 'en', array $header = [], array $body = []): array 
+    {
+        return $this->request([
+            'endpoint' => 'whatsapp',
+            'action' => 'send',
+            'type' => 'template',
+            'nid' => $nid,
+            'to' => $to,
+            'name' => $name,
+            'language' => $language,
+            'header' => $header,
+            'body' => $body
+        ]);
+    }
+
+    public function sendWhatsAppButtons(int $nid, string $to, string $body, array $buttons, ?string $header = null, ?string $footer = null): array 
+    {
+        $payload = [
+            'endpoint' => 'whatsapp',
+            'action' => 'send',
+            'type' => 'buttons',
+            'nid' => $nid,
+            'to' => $to,
+            'body' => $body,
+            'button' => $buttons
+        ];
+        if ($header) $payload['header'] = $header;
+        if ($footer) $payload['footer'] = $footer;
+
+        return $this->request($payload);
+    }
+
+    public function sendWhatsAppList(int $nid, string $to, string $body, array $listItems, ?string $label = null, ?string $header = null, ?string $footer = null): array 
+    {
+        $payload = [
+            'endpoint' => 'whatsapp',
+            'action' => 'send',
+            'type' => 'list',
+            'nid' => $nid,
+            'to' => $to,
+            'body' => $body,
+            'list' => $listItems
+        ];
+        if ($label) $payload['label'] = $label;
+        if ($header) $payload['header'] = $header;
+        if ($footer) $payload['footer'] = $footer;
+
+        return $this->request($payload);
+    }
+
+    public function sendWhatsAppMedia(int $nid, string $to, string $type, string $mediaUrl, ?string $caption = null): array 
+    {
+        $payload = [
+            'endpoint' => 'whatsapp',
+            'action' => 'send',
+            'type' => $type,
+            'nid' => $nid,
+            'to' => $to,
+            'link' => $mediaUrl
+        ];
+        if ($caption) $payload['body'] = $caption;
+
+        return $this->request($payload);
+    }
+
+    public function requestWhatsAppLocation(int $nid, string $to, string $body): array 
+    {
+        return $this->request([
+            'endpoint' => 'whatsapp',
+            'action' => 'send',
+            'type' => 'location_request',
+            'nid' => $nid,
+            'to' => $to,
+            'body' => $body
+        ]);
     }
 
     public function sendSms(int $nid, string $to, string $body): array 
