@@ -75,7 +75,7 @@
 #### PHP
 Install via Composer:
 ```bash
-composer require xiigroup/ucgateway
+composer require xiigroup/uc-gateway-sdk
 
 ```
 
@@ -84,9 +84,9 @@ composer require xiigroup/ucgateway
 Install via npm or yarn:
 
 ```bash
-npm install @xiigroup/ucgateway
+npm install @xiigroup/uc-gateway-sdk
 # or
-yarn add @xiigroup/ucgateway
+yarn add @xiigroup/uc-gateway-sdk
 
 ```
 
