@@ -1,12 +1,3 @@
-Here is a high-converting, professional **`README.md`** tailored specifically for the **UC Gateway WhatsApp & SMS API**.
-
-It incorporates modern GitHub documentation standards: clear visual structure, badging, quick-start code snippets, copy-paste JSON specs, and step-by-step webhook signature validation examples.
-
----
-
-### Copyable `README.md` Source Code
-
-```markdown
 <div align="center">
 
 # 🚀 UC Gateway API
