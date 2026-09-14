@@ -11,7 +11,7 @@
 [![Build Status](https://img.shields.io/badge/Status-Active-brightgreen.svg?style=for-the-badge)](#)
 [![Publisher](https://img.shields.io/badge/Publisher-XII_Group-orange.svg?style=for-the-badge)](https://github.com/xiigroup)
 
-[Key Features](#-key-features) • [Quick Start](#-quick-start) • [Message Payloads](#-whatsapp-message-payloads) • [Webhooks & Security](#-webhooks--signature-validation) • [Stateful Chatbots](#-stateful-chatbot-engine) • [Support](#-author--support)
+[Key Features](#-key-features) • [Quick Start](#-quick-start) • [Message Payloads](#-whatsapp-message-payloads) • [SMS API](#-sms-api) • [Webhooks & Security](#-webhooks--signature-validation) • [Stateful Chatbots](#-stateful-chatbot-engine) • [Support](#-author--support)
 
 </div>
 
@@ -24,7 +24,6 @@
 
 ```
 
-```
               ┌─────────────────┐
               │   Your App /    │
               │ Serverless Bot  │
@@ -40,9 +39,7 @@
      ┌─────────────────┴─────────────────┐
      ▼                                   ▼
 
-```
-
-🟢 WhatsApp Cloud                  📡 SMS Telco Network
+🟢 WhatsApp Cloud              📡 SMS Telco Network
 
 ```
 
@@ -73,14 +70,87 @@
 
 ## 🚀 Quick Start
 
-### Authentication Header
-Generate your Base64 string from your portal credentials:
+### 📦 SDK Installation
+
+#### PHP
+Install via Composer:
 ```bash
-echo -n "your_username:your_password" | base64
+composer require xiigroup/ucgateway
 
 ```
 
-### 1. Send WhatsApp Text Message (cURL)
+#### Node.js / TypeScript
+
+Install via npm or yarn:
+
+```bash
+npm install @xiigroup/ucgateway
+# or
+yarn add @xiigroup/ucgateway
+
+```
+
+---
+
+### 💻 SDK Initialization & Usage
+
+#### PHP SDK
+
+```php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Xiigroup\UcGateway\UcGatewayClient;
+
+// Initialize the SDK client
+$client = new UcGatewayClient(
+    username: 'YOUR_API_USERNAME',
+    password: 'YOUR_API_PASSWORD'
+);
+
+// Send WhatsApp Text Message
+$response =$client->sendWhatsAppText(
+    nid: 12345678,
+    to: '27716629021',
+    body: 'Hello from UC Gateway PHP SDK!'
+);
+
+print_r($response);
+
+```
+
+#### TypeScript / Node.js SDK
+
+```typescript
+import { UcGatewayClient } from '@xiigroup/ucgateway';
+
+// Initialize the SDK client
+const client = new UcGatewayClient({
+  username: process.env.UC_API_USERNAME!,
+  password: process.env.UC_API_PASSWORD!
+});
+
+// Send WhatsApp Text Message
+async function sendMessage() {
+  const response = await client.sendWhatsAppText(
+    12345678,
+    '27716629021',
+    'Hello from UC Gateway Node.js SDK!'
+  );
+
+  console.log(response);
+}
+
+sendMessage();
+
+```
+
+---
+
+### 🌐 Direct HTTP / cURL Example
+
+#### 1. Send WhatsApp Text Message (cURL)
 
 ```bash
 curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" \
@@ -98,7 +168,7 @@ curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" 
 
 ```
 
-### 2. Send SMS Message (cURL)
+#### 2. Send SMS Message (cURL)
 
 ```bash
 curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" \
@@ -119,6 +189,10 @@ curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" 
 
 ## 💬 WhatsApp Message Payloads
 
+Below are the JSON payload structures for various WhatsApp message types supported by the gateway.
+
+### 1. Template Message
+Used to send pre-approved transactional or promotional WhatsApp templates containing header and body variable parameters[cite: 2].
 ```json
 {
   "endpoint": "whatsapp",
@@ -137,6 +211,10 @@ curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" 
 }
 
 ```
+
+### 2. Interactive List Message
+
+Displays a menu button (`label`) that opens a structured list of selectable options with titles and descriptions.
 
 ```json
 {
@@ -157,6 +235,10 @@ curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" 
 
 ```
 
+### 3. Quick Reply Buttons Message
+
+Sends an interactive message with up to 3 quick reply action buttons for fast user responses.
+
 ```json
 {
   "endpoint": "whatsapp",
@@ -175,6 +257,10 @@ curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" 
 
 ```
 
+### 4. Media Message (Image / Document / Audio / Video)
+
+Sends hosted media files via a direct URL link with an optional caption text body.
+
 ```json
 {
   "endpoint": "whatsapp",
@@ -188,6 +274,10 @@ curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" 
 
 ```
 
+### 5. Direct Message Reply
+
+Replies directly to a previously received incoming message by referencing its unique WhatsApp Message ID (`msg_id`).
+
 ```json
 {
   "endpoint": "whatsapp",
@@ -200,6 +290,72 @@ curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" 
 }
 
 ```
+
+## 📡 SMS API
+
+### Outgoing SMS Payload
+
+To send an SMS, set `"endpoint": "sms"` and supply the standard dispatch fields:
+
+```json
+{
+  "endpoint": "sms",
+  "action": "send",
+  "nid": 12345678,
+  "to": "27670826044",
+  "body": "Your verification code is: 4829"
+}
+
+```
+
+### Incoming SMS Webhook Payload
+
+Incoming SMS messages are delivered to your portal-configured SMS webhook as `type="text"`:
+
+```json
+{
+  "id": "b27e8723-b8bb-4604-0109-09140000a61d",
+  "mo_msg_id": "18361924",
+  "charset": "UTF-8",
+  "type": "text",
+  "sender": "27990794903081",
+  "from": "27603166427",
+  "name": "Guest",
+  "message": "Hi",
+  "state": 1,
+  "memory": []
+}
+
+```
+
+### SMS Delivery Receipt (DLR / Status Webhook)
+
+Status updates regarding outbound SMS delivery are dispatched asynchronously to your SMS status webhook:
+
+```json
+{
+  "id": "1789370565",
+  "platform": "sms",
+  "status": "delivered",
+  "recipient_id": "27603166427",
+  "timestamp": "1789372457"
+}
+
+```
+
+---
+
+## ⚖️ WhatsApp vs. SMS Feature Comparison
+
+| Feature | WhatsApp | SMS |
+| --- | --- | --- |
+| **API Version** | `v1.0`<br> | `v1.0`<br> |
+| **Endpoint Parameter** | `whatsapp`<br> | `sms`<br> |
+| **Credentials** | WhatsApp API Credentials | SMS API Credentials |
+| **Supported Message Types** | Text, Templates, Lists, CTA, Buttons, Media, Location, Keypad | Plain Text (`type="text"`) |
+| **Supported DLR Statuses** | `sent`, `delivered`, `read`<br> | `sent`, `delivered`, `undelivered`, `queued`, `failed`<br> |
+| **Webhooks** | Configured via WhatsApp Portal Settings | Configured via SMS Portal Settings |
+| **Stateful Engine** | Native `state` & `memory`<br> | Native `state` & `memory`<br> |
 
 ---
 
@@ -330,8 +486,11 @@ If your server acts as an automated bot, you can return a `200 OK` HTTP response
 ## 👤 Author & Support
 
 * **Author:** Sipho Selabe
-* **Email:** [sg.selabe@xiigroup.co.za](https://www.google.com/search?q=mailto%3Asg.selabe%40xiigroup.co.za)
-* **Organization:** XII Group
-* **GitHub Repository:** [xiigroup](https://github.com/xiigroup)
 
----
+
+* **Email:** [sg.selabe@xiigroup.co.za](https://www.google.com/search?q=mailto%3Asg.selabe%40xiigroup.co.za)
+
+* **Organization:** XII Group
+
+
+* **GitHub Repository:** [xiigroup](https://github.com/xiigroup)
