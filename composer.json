@@ -1,0 +1,30 @@
+{
+    "name": "xiigroup/uc-gateway-sdk",
+    "description": "Official PHP Integration SDK for XII Group UC Gateway",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sipho Selabe",
+            "email": "sg.selabe@xiigroup.co.za"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Xiigroup\\UcGateway\\": "src/php/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Xiigroup\\UcGateway\\Tests\\": "tests/php/"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
