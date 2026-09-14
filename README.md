@@ -192,7 +192,7 @@ curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" 
 Below are the JSON payload structures for various WhatsApp message types supported by the gateway.
 
 ### 1. Template Message
-Used to send pre-approved transactional or promotional WhatsApp templates containing header and body variable parameters[cite: 2].
+Used to send pre-approved transactional or promotional WhatsApp templates containing header and body variable parameters.
 ```json
 {
   "endpoint": "whatsapp",
@@ -382,7 +382,9 @@ $$\text{Signature} = \text{HMAC-SHA256}(\text{SharedSecret}, \text{RawRequestBod
 ```php
 <?php
 // 1. Fetch raw request body & signature header
-$rawPayload = file_get_contents('php://input');$incomingSignature = $_SERVER['HTTP_X_UC_SIGNATURE'] ?? '';$secret = 'YOUR_PORTAL_SHARED_SECRET';
+$rawPayload = file_get_contents('php://input');
+$incomingSignature = $_SERVER['HTTP_X_UC_SIGNATURE'] ?? '';
+$secret = 'YOUR_PORTAL_SHARED_SECRET';
 
 // 2. Compute HMAC SHA-256 hash
 $calculatedSignature = hash_hmac('sha256', $rawPayload,$secret);
@@ -487,10 +489,8 @@ If your server acts as an automated bot, you can return a `200 OK` HTTP response
 
 * **Author:** Sipho Selabe
 
-
 * **Email:** [sg.selabe@xiigroup.co.za](https://www.google.com/search?q=mailto%3Asg.selabe%40xiigroup.co.za)
 
 * **Organization:** XII Group
-
 
 * **GitHub Repository:** [xiigroup](https://github.com/xiigroup)
