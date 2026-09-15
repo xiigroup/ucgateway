@@ -291,7 +291,7 @@ async function sendSmsExample() {
 #### 1. Send WhatsApp Text Message (cURL)
 
 ```bash
-curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" \
+curl -X POST "https://uc-api.xiigroup.co.za/" \
   -u "username:password" \
   -H "Content-Type: application/json" \
   -H "HTTP_API_VERSION: v1.0" \
@@ -309,7 +309,7 @@ curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" 
 #### 2. Send SMS Message (cURL)
 
 ```bash
-curl -X POST "[https://uc-api.xiigroup.co.za/](https://uc-api.xiigroup.co.za/)" \
+curl -X POST "https://uc-api.xiigroup.co.za/" \
   -u "sms_username:sms_password" \
   -H "Content-Type: application/json" \
   -H "HTTP_API_VERSION: v1.0" \
@@ -406,7 +406,7 @@ Sends hosted media files via a direct URL link with an optional caption text bod
   "type": "image",
   "nid": 12345678,
   "to": "27716629021",
-  "link": "[https://domain.com/assets/banner.jpg](https://domain.com/assets/banner.jpg)",
+  "link": "https://domain.com/assets/banner.jpg",
   "body": "Check out our latest release!"
 }
 
