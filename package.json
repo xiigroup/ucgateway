@@ -1,5 +1,5 @@
 {
-  "name": "@xiigroup/uc-gateway-sdk",
+  "name": "@xiigroup/ucgateway",
   "version": "1.0.0",
   "description": "Official Integration SDK for XII Group UC Gateway (WhatsApp & SMS)",
   "main": "dist/index.js",
