@@ -1,5 +1,5 @@
 {
-    "name": "xiigroup/uc-gateway-sdk",
+    "name": "xiigroup/ucgateway",
     "description": "Official PHP Integration SDK for XII Group UC Gateway",
     "type": "library",
     "license": "MIT",
