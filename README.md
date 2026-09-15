@@ -109,15 +109,75 @@ $client = new UcGatewayClient(
     password: 'YOUR_API_PASSWORD'
 );
 
-// Send WhatsApp Text Message
-$response =$client->sendWhatsAppText(
+// Plain Text (Optionally pass $msgId to send a direct reply)
+$client->sendWhatsAppText(
     nid: 12345678,
     to: '27716629021',
     body: 'Hello from UC Gateway PHP SDK!'
 );
 
-print_r($response);
+// Template Message
+$client->sendWhatsAppTemplate(
+    nid: 12345678,
+    to: '27716629021',
+    name: 'welcome_template',
+    language: 'en',
+    header: [['text' => 'Welcome']],
+    body: [['text' => 'John']]
+);
 
+// Quick Reply Buttons
+$client->sendWhatsAppButtons(
+    nid: 12345678,
+    to: '27716629021',
+    body: 'How can we assist you today?',
+    buttons: ['Billing Inquiry', 'Technical Support'],
+    header: 'Support Desk',
+    footer: 'Automated Helpdesk'
+);
+
+// Interactive List
+$client->sendWhatsAppList(
+    nid: 12345678,
+    to: '27716629021',
+    body: 'Please choose an option below:',
+    listItems: [
+        'Option 1 Description' => 'Option 1',
+        'Option 2 Description' => 'Option 2'
+    ],
+    label: 'Select Option',
+    header: 'Main Menu',
+    footer: 'XII Group'
+);
+
+// Media (image, video, audio, document)
+$client->sendWhatsAppMedia(
+    nid: 12345678,
+    to: '27716629021',
+    type: 'image',
+    mediaUrl: 'https://domain.com/assets/banner.jpg',
+    caption: 'Check out our latest release!'
+);
+
+// Request Location
+$client->requestWhatsAppLocation(
+    nid: 12345678,
+    to: '27716629021',
+    body: 'Please share your location to proceed.'
+);
+```
+
+```
+$smsClient = new Xiigroup\UcGateway\UcGatewayClient(
+    username: 'YOUR_SMS_USERNAME',
+    password: 'YOUR_SMS_PASSWORD'
+);
+
+$smsClient->sendSms(
+    nid: 12345678,
+    to: '27670826044',
+    body: 'Your verification code is: 4829'
+);
 ```
 
 #### TypeScript / Node.js SDK
@@ -131,19 +191,97 @@ const client = new UcGatewayClient({
   password: process.env.UC_API_PASSWORD!
 });
 
-// Send WhatsApp Text Message
-async function sendMessage() {
-  const response = await client.sendWhatsAppText(
-    12345678,
-    '27716629021',
-    'Hello from UC Gateway Node.js SDK!'
+async function sendWhatsAppExamples() {
+  const nid = 12345678;
+  const to = '27716629021';
+
+  // Plain Text (Optionally pass msgId to reply directly)
+  await client.sendWhatsAppText(nid, to, 'Hello from UC Gateway Node.js SDK!');
+
+  // Template Message
+  await client.sendWhatsAppTemplate(
+    nid,
+    to,
+    'welcome_template',
+    'en',
+    [{ text: 'Welcome' }],
+    [{ text: 'John' }]
   );
 
-  console.log(response);
+  // Quick Reply Buttons
+  await client.sendWhatsAppButtons(
+    nid,
+    to,
+    'How can we assist you today?',
+    ['Billing Inquiry', 'Technical Support'],
+    'Support Desk',
+    'Automated Helpdesk'
+  );
+
+  // Interactive List
+  await client.sendWhatsAppList(
+    nid,
+    to,
+    'Please choose an option below:',
+    {
+      'Option 1 Description': 'Option 1',
+      'Option 2 Description': 'Option 2'
+    },
+    { label: 'Select Option', header: 'Main Menu', footer: 'XII Group' }
+  );
+
+  // Call To Action (CTA) Link
+  await client.sendWhatsAppCTA(
+    nid,
+    to,
+    'https://xiigroup.co.za',
+    'Click the link below to visit our website',
+    { header: 'XII Group', footer: 'Official Portal' }
+  );
+
+  // Media (image, video, audio, document, sticker)
+  await client.sendWhatsAppMedia(
+    nid,
+    to,
+    'image',
+    'https://domain.com/assets/banner.jpg',
+    'Check out our latest release!'
+  );
+
+  // Send Location Coordinates
+  await client.sendWhatsAppLocation(
+    nid,
+    to,
+    -25.7479,
+    28.2293,
+    'XII Group HQ',
+    'Pretoria, South Africa'
+  );
+
+  // Request Location
+  await client.requestWhatsAppLocation(nid, to, 'Please share your location to proceed.');
+
+  // Pinpad / Dialpad Interactive Interface
+  await client.sendWhatsAppKeypad(nid, to, 'Enter your 4-digit PIN code:', 'pinpad');
+
+  // Mark Received Message as Read
+  await client.markAsRead(nid, 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJEOTAzMDUyNzZCNUVFNzg1RDkA');
 }
+```
 
-sendMessage();
+```
+const smsClient = new UcGatewayClient({
+  username: process.env.UC_SMS_USERNAME!,
+  password: process.env.UC_SMS_PASSWORD!
+});
 
+async function sendSmsExample() {
+  await smsClient.sendSms(
+    12345678,
+    '27670826044',
+    'Your verification code is: 4829'
+  );
+}
 ```
 
 ---
