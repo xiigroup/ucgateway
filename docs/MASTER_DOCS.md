@@ -5,7 +5,7 @@ This document serves as the official technical specification for integrating wit
 **API Version:** `v1.0`  
 **Author:** Sipho Selabe  
 **Email:** sg.selabe@xiigroup.co.za  
-**Developer Resources:** https://github.com/xiigroup
+**Developer Resources:** https://github.com/xiigroup/ucgateway
 
 ---
 
