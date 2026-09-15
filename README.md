@@ -75,7 +75,7 @@
 #### PHP
 Install via Composer:
 ```bash
-composer require xiigroup/uc-gateway-sdk
+composer require xiigroup/ucgateway
 
 ```
 
