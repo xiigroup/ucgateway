@@ -84,9 +84,9 @@ composer require xiigroup/uc-gateway-sdk
 Install via npm or yarn:
 
 ```bash
-npm install @xiigroup/uc-gateway-sdk
+npm install @xiigroup/ucgateway
 # or
-yarn add @xiigroup/uc-gateway-sdk
+yarn add @xiigroup/ucgateway
 
 ```
 
