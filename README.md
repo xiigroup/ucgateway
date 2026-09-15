@@ -113,7 +113,8 @@ $client = new UcGatewayClient(
 $client->sendWhatsAppText(
     nid: 12345678,
     to: '27716629021',
-    body: 'Hello from UC Gateway PHP SDK!'
+    body: 'Hello from UC Gateway PHP SDK!',
+//  msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
 );
 
 // Template Message
