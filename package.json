@@ -1,6 +1,6 @@
 {
   "name": "@xiigroup/ucgateway",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official Integration SDK for XII Group UC Gateway (WhatsApp & SMS)",
   "main": "dist/UcGatewayClient.js",
   "types": "dist/UcGatewayClient.d.ts",
