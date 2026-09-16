@@ -67,7 +67,7 @@ class UcGatewayClient
         ]);
     }
 
-    public function sendWhatsAppButtons(int $nid, string $to, string $body, array $buttons, ?string $header = null, ?string $footer = null): array 
+    public function sendWhatsAppButtons(int $nid, string $to, string $body, array $buttons, ?string $header = null, ?string $footer = null, ?string $msgId = null): array 
     {
         $payload = [
             'endpoint' => 'whatsapp',
@@ -80,11 +80,12 @@ class UcGatewayClient
         ];
         if ($header) $payload['header'] = $header;
         if ($footer) $payload['footer'] = $footer;
+        if ($msgId !== null) $payload['msg_id'] = $msgId;
 
         return $this->request($payload);
     }
 
-    public function sendWhatsAppList(int $nid, string $to, string $body, array $listItems, ?string $label = null, ?string $header = null, ?string $footer = null): array 
+    public function sendWhatsAppList(int $nid, string $to, string $body, array $listItems, ?string $label = null, ?string $header = null, ?string $footer = null, ?string $msgId = null): array 
     {
         $payload = [
             'endpoint' => 'whatsapp',
@@ -98,11 +99,12 @@ class UcGatewayClient
         if ($label) $payload['label'] = $label;
         if ($header) $payload['header'] = $header;
         if ($footer) $payload['footer'] = $footer;
+        if ($msgId !== null) $payload['msg_id'] = $msgId;
 
         return $this->request($payload);
     }
 
-    public function sendWhatsAppMedia(int $nid, string $to, string $type, string $mediaUrl, ?string $caption = null): array 
+    public function sendWhatsAppMedia(int $nid, string $to, string $type, string $mediaUrl, ?string $caption = null, ?string $msgId = null): array 
     {
         $payload = [
             'endpoint' => 'whatsapp',
@@ -113,20 +115,40 @@ class UcGatewayClient
             'link' => $mediaUrl
         ];
         if ($caption) $payload['body'] = $caption;
+        if ($msgId !== null) $payload['msg_id'] = $msgId;
 
         return $this->request($payload);
     }
 
-    public function requestWhatsAppLocation(int $nid, string $to, string $body): array 
+    public function sendWhatsAppLocation(int $nid, string $to, string longitude, string latitude, ?string $msgId = null): array 
     {
-        return $this->request([
+        $payload = [
+            'endpoint' => 'whatsapp',
+            'action' => 'send',
+            'type' => 'location_request',
+            'nid' => $nid,
+            'to' => $to,
+            'longitude' => $longitude,
+            'latitude' => $latitude
+        ];
+        if ($msgId !== null) $payload['msg_id'] = $msgId;
+        
+        return $this->request($payload);
+    }
+    
+    public function requestWhatsAppLocation(int $nid, string $to, string $body, ?string $msgId = null): array 
+    {
+        $payload = [
             'endpoint' => 'whatsapp',
             'action' => 'send',
             'type' => 'location_request',
             'nid' => $nid,
             'to' => $to,
             'body' => $body
-        ]);
+        ];
+        if ($msgId !== null) $payload['msg_id'] = $msgId;
+        
+        return $this->request($payload);
     }
 
     public function sendSms(int $nid, string $to, string $body): array 
