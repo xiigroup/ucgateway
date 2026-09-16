@@ -179,6 +179,12 @@ $client->requestWhatsAppLocation(
     body: 'Please share your location to proceed.',
 //  msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
 );
+
+// Mark Received Message as Read
+$client->markAsRead(
+    nid: 12345678,
+    msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
+);
 ```
 
 ```
