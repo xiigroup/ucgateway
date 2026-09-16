@@ -448,7 +448,40 @@ Sends hosted media files via a direct URL link with an optional caption text bod
 
 ```
 
-### 5. Direct Message Reply
+### 5. Send location
+
+Send whatsapp location.
+
+```json
+{
+  "endpoint": "whatsapp",
+  "action": "send",
+  "type": "location_request",
+  "nid": 12345678,
+  "to": "27716629021",
+  "longitude": "28.422152",
+  "latitude": "-25.723444"
+}
+
+```
+
+### 6. Request location
+
+Request whatsapp location.
+
+```json
+{
+  "endpoint": "whatsapp",
+  "action": "send",
+  "type": "location_request",
+  "nid": 12345678,
+  "to": "27716629021",
+  "body": "Send your location"
+}
+
+```
+
+### 7. Direct Message Reply
 
 Replies directly to a previously received incoming message by referencing its unique WhatsApp Message ID (`msg_id`).
 
@@ -465,9 +498,9 @@ Replies directly to a previously received incoming message by referencing its un
 
 ```
 
-### 6. Mark message as read
+### 8. Mark message as read
 
-Mark received message as mark by sending Whatsapp Message ID in msg_id field.
+Mark received message as Read by sending Whatsapp Message ID in msg_id field.
 
 ```json
 {
