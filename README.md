@@ -465,6 +465,21 @@ Replies directly to a previously received incoming message by referencing its un
 
 ```
 
+### 6. Mark message as read
+
+Mark received message as mark by sending Whatsapp Message ID in msg_id field.
+
+```json
+{
+  "endpoint": "whatsapp",
+  "action": "send",
+  "type": "read",
+  "nid": 12345678,
+  "msg_id": "wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJEOTAzMDUyNzZCNUVFNzg1RDkA"
+}
+
+```
+
 ## 📡 SMS API
 
 ### Outgoing SMS Payload
