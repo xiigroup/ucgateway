@@ -16,14 +16,15 @@ interface IncomingPayload {
   type?: string;
   message?: string;
   state?: string;
-  memory?: Record<string, any>;
+  memory?: any[];
   files?: Array<Record<string, any>>;
 }
 
 interface BotResponse {
   state: string;
   message: string | null;
-  memory: Record<string, any>;
+  memory: any[];
+  read: boolean;
   api: any | null;
   error: string | null;
 }
@@ -33,14 +34,15 @@ export class BotStateRouter {
   static async handle(incomingPayload: IncomingPayload): Promise<BotResponse> {
     const currentState = incomingPayload.state || 'START';
     const userMessage = (incomingPayload.message || '').trim().toLowerCase();
-    const memory = incomingPayload.memory || {};
+    const memory = Array.isArray(incomingPayload.memory) ? incomingPayload.memory : [];
 
     switch (currentState) {
       case 'START':
         return {
           state: 'AWAITING_CHOICE',
           message: `Hello ${incomingPayload.name || 'there'}! Select an option:\n1. Claim Voucher\n2. Support`,
-          memory: { ...memory, session_started: true },
+          memory: [...memory, 'session_started'],
+          read: true,
           api: null,
           error: null,
         };
@@ -50,15 +52,29 @@ export class BotStateRouter {
           return {
             state: 'VOUCHER_CLAIMED',
             message: 'Your R200 voucher has been claimed!',
-            memory: { ...memory, voucher: { amount: '200', status: 'claimed' } },
+            memory: [...memory, { voucher: { amount: '200', status: 'claimed' } }],
+            read: true,
             api: null,
             error: null,
           };
         }
+
+        if (userMessage === '2') {
+          return {
+            state: 'SUPPORT_CONNECTED',
+            message: 'A support representative will be with you shortly.',
+            memory: [...memory, 'requested_support'],
+            read: true,
+            api: null,
+            error: null,
+          };
+        }
+
         return {
           state: 'AWAITING_CHOICE',
           message: 'Invalid choice. Please reply with 1 or 2.',
           memory,
+          read: true,
           api: null,
           error: null,
         };
@@ -67,7 +83,8 @@ export class BotStateRouter {
         return {
           state: 'START',
           message: 'Session reset. Type "Hi" to begin.',
-          memory: {},
+          memory: [],
+          read: true,
           api: null,
           error: null,
         };
@@ -81,9 +98,12 @@ export const handler = async (
 ): Promise<APIGatewayProxyResult> => {
   const secret = process.env.PORTAL_SHARED_SECRET || 'your_portal_shared_secret';
   
-  // Normalize HTTP headers
+  // Normalize HTTP headers for robust case-insensitive signature extraction
   const headers = event.headers || {};
-  const signature = headers['x-uc-signature'] || headers['X-Uc-Signature'];
+  const signatureKey = Object.keys(headers).find(
+    (key) => key.toLowerCase() === 'x-uc-signature'
+  );
+  const signature = signatureKey ? headers[signatureKey] : undefined;
 
   // Decode Base64 body if API Gateway passes encoded binary
   const rawBody = event.isBase64Encoded && event.body
@@ -98,7 +118,8 @@ export const handler = async (
       body: JSON.stringify({
         state: 'START',
         message: null,
-        memory: {},
+        memory: [],
+        read: false,
         api: null,
         error: 'Invalid Webhook Signature',
       }),
@@ -122,7 +143,8 @@ export const handler = async (
       body: JSON.stringify({
         state: 'START',
         message: null,
-        memory: {},
+        memory: [],
+        read: false,
         api: null,
         error: 'Invalid JSON Payload',
       }),
