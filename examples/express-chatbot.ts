@@ -21,14 +21,15 @@ interface IncomingPayload {
   type?: string;
   message?: string;
   state?: string;
-  memory?: Record<string, any>;
+  memory?: any[];
   files?: Array<Record<string, any>>;
 }
 
 interface BotResponse {
   state: string;
   message: string | null;
-  memory: Record<string, any>;
+  memory: any[];
+  read: boolean;
   api: any | null;
   error: string | null;
 }
@@ -38,14 +39,15 @@ class BotStateRouter {
   static handle(incomingPayload: IncomingPayload): BotResponse {
     const currentState = incomingPayload.state || 'START';
     const userMessage = (incomingPayload.message || '').trim().toLowerCase();
-    const memory = incomingPayload.memory || {};
+    const memory = Array.isArray(incomingPayload.memory) ? incomingPayload.memory : [];
 
     switch (currentState) {
       case 'START':
         return {
           state: 'AWAITING_CHOICE',
           message: `Hello ${incomingPayload.name || 'there'}! Select an option:\n1. Claim Voucher\n2. Support`,
-          memory: { ...memory, session_started: true },
+          memory: [...memory, 'session_started'],
+          read: true,
           api: null,
           error: null,
         };
@@ -55,15 +57,29 @@ class BotStateRouter {
           return {
             state: 'VOUCHER_CLAIMED',
             message: 'Your R200 voucher has been claimed!',
-            memory: { ...memory, voucher: { amount: '200', status: 'claimed' } },
+            memory: [...memory, { voucher: { amount: '200', status: 'claimed' } }],
+            read: true,
             api: null,
             error: null,
           };
         }
+
+        if (userMessage === '2') {
+          return {
+            state: 'SUPPORT_CONNECTED',
+            message: 'A support representative will be with you shortly.',
+            memory: [...memory, 'requested_support'],
+            read: true,
+            api: null,
+            error: null,
+          };
+        }
+
         return {
           state: 'AWAITING_CHOICE',
           message: 'Invalid choice. Please reply with 1 or 2.',
           memory,
+          read: true,
           api: null,
           error: null,
         };
@@ -72,7 +88,8 @@ class BotStateRouter {
         return {
           state: 'START',
           message: 'Session reset. Type "Hi" to begin.',
-          memory: {},
+          memory: [],
+          read: true,
           api: null,
           error: null,
         };
@@ -82,7 +99,13 @@ class BotStateRouter {
 
 app.post('/webhook', (req: Request, res: Response) => {
   const secret = process.env.PORTAL_SHARED_SECRET || 'your_portal_shared_secret';
-  const incomingSignature = req.headers['x-uc-signature'] as string | undefined;
+  
+  // Normalize header lookup for case-insensitivity across node environments
+  const signatureKey = Object.keys(req.headers).find(
+    (key) => key.toLowerCase() === 'x-uc-signature'
+  );
+  const incomingSignature = signatureKey ? (req.headers[signatureKey] as string) : undefined;
+  
   const rawBody = req.body ? req.body.toString('utf8') : '';
 
   // 1. Verify HMAC SHA-256 Signature
@@ -91,7 +114,8 @@ app.post('/webhook', (req: Request, res: Response) => {
     return res.status(401).json({
       state: 'START',
       message: null,
-      memory: {},
+      memory: [],
+      read: false,
       api: null,
       error: 'Invalid Signature/Secret',
     });
@@ -106,7 +130,8 @@ app.post('/webhook', (req: Request, res: Response) => {
     return res.status(400).json({
       state: 'START',
       message: null,
-      memory: {},
+      memory: [],
+      read: false,
       api: null,
       error: 'Invalid JSON Payload',
     });
