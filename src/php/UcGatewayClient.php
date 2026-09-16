@@ -162,14 +162,12 @@ class UcGatewayClient
         return $this->request($payload);
     }
 
-    public function markAsRead(int $nid, string $to, string $msgId): array 
+    public function markAsRead(int $nid, string $msgId): array 
     {
         $payload = [
             'endpoint' => 'whatsapp',
-            'action' => 'send',
-            'type' => 'read',
+            'action' => 'read',
             'nid' => $nid,
-            'to' => $to,
             'msg_id' => $msgId
         ];
         
