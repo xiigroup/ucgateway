@@ -448,7 +448,7 @@ Sends hosted media files via a direct URL link with an optional caption text bod
 
 ```
 
-### 5. Send location
+### 5. Send Location Message
 
 Send whatsapp location.
 
@@ -456,7 +456,7 @@ Send whatsapp location.
 {
   "endpoint": "whatsapp",
   "action": "send",
-  "type": "location_request",
+  "type": "location",
   "nid": 12345678,
   "to": "27716629021",
   "longitude": "28.422152",
@@ -465,7 +465,7 @@ Send whatsapp location.
 
 ```
 
-### 6. Request location
+### 6. Request Location Message
 
 Request whatsapp location.
 
