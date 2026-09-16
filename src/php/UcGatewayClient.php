@@ -120,12 +120,12 @@ class UcGatewayClient
         return $this->request($payload);
     }
 
-    public function sendWhatsAppLocation(int $nid, string $to, string longitude, string latitude, ?string $msgId = null): array 
+    public function sendWhatsAppLocation(int $nid, string $to, string $longitude, string $latitude, ?string $msgId = null): array 
     {
         $payload = [
             'endpoint' => 'whatsapp',
             'action' => 'send',
-            'type' => 'location_request',
+            'type' => 'location',
             'nid' => $nid,
             'to' => $to,
             'longitude' => $longitude,
