@@ -229,7 +229,8 @@ async function sendWhatsAppExamples() {
     'How can we assist you today?',
     ['Billing Inquiry', 'Technical Support'],
     'Support Desk',
-    'Automated Helpdesk'
+    'Automated Helpdesk',
+  //  'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA' //uncomment to send reply to previous message
   );
 
   // Interactive List
@@ -241,7 +242,8 @@ async function sendWhatsAppExamples() {
       'Option 1 Description': 'Option 1',
       'Option 2 Description': 'Option 2'
     },
-    { label: 'Select Option', header: 'Main Menu', footer: 'XII Group' }
+    { label: 'Select Option', header: 'Main Menu', footer: 'XII Group' },
+  //  'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA'
   );
 
   // Call To Action (CTA) Link
@@ -250,7 +252,8 @@ async function sendWhatsAppExamples() {
     to,
     'https://xiigroup.co.za',
     'Click the link below to visit our website',
-    { header: 'XII Group', footer: 'Official Portal' }
+    { header: 'XII Group', footer: 'Official Portal' },
+  //  'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA'
   );
 
   // Media (image, video, audio, document, sticker)
@@ -259,7 +262,8 @@ async function sendWhatsAppExamples() {
     to,
     'image',
     'https://domain.com/assets/banner.jpg',
-    'Check out our latest release!'
+    'Check out our latest release!',
+  //  'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA'
   );
 
   // Send Location Coordinates
@@ -269,14 +273,26 @@ async function sendWhatsAppExamples() {
     -25.7479,
     28.2293,
     'XII Group HQ',
-    'Pretoria, South Africa'
+    'Pretoria, South Africa',
+  //  'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA'
   );
 
   // Request Location
-  await client.requestWhatsAppLocation(nid, to, 'Please share your location to proceed.');
+  await client.requestWhatsAppLocation(
+    nid,
+    to,
+    'Please share your location to proceed.',
+  //  'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA'
+);
 
   // Pinpad / Dialpad Interactive Interface
-  await client.sendWhatsAppKeypad(nid, to, 'Enter your 4-digit PIN code:', 'pinpad');
+  await client.sendWhatsAppKeypad(
+    nid,
+    to,
+    'Enter your 4-digit PIN code:',
+    'pinpad',
+  //  'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA'
+);
 
   // Mark Received Message as Read
   await client.markAsRead(nid, 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJEOTAzMDUyNzZCNUVFNzg1RDkA');
