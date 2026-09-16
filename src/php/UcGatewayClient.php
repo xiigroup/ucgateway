@@ -29,7 +29,18 @@ class UcGatewayClient
 
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
         curl_close($ch);
+
+        if ($response === false) {
+            return [
+                'code' => $httpCode ?: 500,
+                'data' => [
+                    'status' => 'error',
+                    'message' => 'cURL Request Failed: ' . $curlError
+                ]
+            ];
+        }
 
         return [
             'code' => $httpCode,
@@ -120,7 +131,7 @@ class UcGatewayClient
         return $this->request($payload);
     }
 
-    public function sendWhatsAppLocation(int $nid, string $to, string $longitude, string $latitude, ?string $msgId = null): array 
+    public function sendWhatsAppLocation(int $nid, string $to, float|string $longitude, float|string $latitude, ?string $msgId = null): array 
     {
         $payload = [
             'endpoint' => 'whatsapp',
@@ -128,8 +139,8 @@ class UcGatewayClient
             'type' => 'location',
             'nid' => $nid,
             'to' => $to,
-            'longitude' => $longitude,
-            'latitude' => $latitude
+            'longitude' => (string) $longitude,
+            'latitude' => (string) $latitude
         ];
         if ($msgId !== null) $payload['msg_id'] = $msgId;
         
