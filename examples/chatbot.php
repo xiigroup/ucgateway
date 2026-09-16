@@ -34,13 +34,14 @@ $stateController = [
 
 class BotApp 
 {
-    public mixed $api = null;
+    public array $api = [];
     public string $sender;
     public string $phone;
     private string $name;
     public string $state;
-    public mixed $memory;
+    public array $memory;
     public ?string $message = null;
+    public bool $read = false;
 
     private UcGatewayClient $client;
     private int $nid;
@@ -94,6 +95,7 @@ class BotApp
 
         $this->api = $response['data'] ?? null;
         $this->state = 'BOT_DECIDE';
+        $this->read = true; //mark previous message as read
 
         return '';
     }
@@ -129,6 +131,7 @@ class BotApp
             $this->message = 'Please send a media file or document:';
             $this->state = 'FILES_RESPONSE';
         }
+        $this->read = true; //mark previous message as read
 
         return '';
     }
@@ -149,6 +152,7 @@ class BotApp
         }
 
         $this->message = $summary;
+        $this->read = true; //mark previous message as read
         return '';
     }
 }
@@ -211,7 +215,8 @@ header('Content-Type: application/json; charset=utf-8');
 echo json_encode([
     'state'   => $app->state   ?? null,
     'message' => $app->message ?? null,
-    'memory'  => $app->memory  ?? null,
-    'api'     => $app->api     ?? null,
+    'memory'  => $app->memory  ?? [],
+    'read'    => $app->read    ?? false,
+    'api'     => $app->api     ?? [],
     'error'   => $errorMessage ?: null,
 ]);
