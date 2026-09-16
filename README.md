@@ -114,7 +114,7 @@ $client->sendWhatsAppText(
     nid: 12345678,
     to: '27716629021',
     body: 'Hello from UC Gateway PHP SDK!',
-//  msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
+//  msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA', //uncomment to send reply to previous message
 );
 
 // Template Message
@@ -134,7 +134,8 @@ $client->sendWhatsAppButtons(
     body: 'How can we assist you today?',
     buttons: ['Billing Inquiry', 'Technical Support'],
     header: 'Support Desk',
-    footer: 'Automated Helpdesk'
+    footer: 'Automated Helpdesk',
+//  msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
 );
 
 // Interactive List
@@ -148,7 +149,8 @@ $client->sendWhatsAppList(
     ],
     label: 'Select Option',
     header: 'Main Menu',
-    footer: 'XII Group'
+    footer: 'XII Group',
+//  msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
 );
 
 // Media (image, video, audio, document)
@@ -157,14 +159,25 @@ $client->sendWhatsAppMedia(
     to: '27716629021',
     type: 'image',
     mediaUrl: 'https://domain.com/assets/banner.jpg',
-    caption: 'Check out our latest release!'
+    caption: 'Check out our latest release!',
+//  msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
+);
+
+// Send Location
+$client->sendWhatsAppLocation(
+    nid: 12345678,
+    to: '27716629021',
+    longitude: '28.422152',
+    latitude: '-25.723444',
+//  msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
 );
 
 // Request Location
 $client->requestWhatsAppLocation(
     nid: 12345678,
     to: '27716629021',
-    body: 'Please share your location to proceed.'
+    body: 'Please share your location to proceed.',
+//  msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
 );
 ```
 
