@@ -25,7 +25,6 @@ interface BotResponse {
   message: string | null;
   memory: any[];
   read: boolean;
-  api: any | null;
   error: string | null;
 }
 
@@ -43,7 +42,6 @@ export class BotStateRouter {
           message: `Hello ${incomingPayload.name || 'there'}! Select an option:\n1. Claim Voucher\n2. Support`,
           memory: [...memory, 'session_started'],
           read: true,
-          api: null,
           error: null,
         };
 
@@ -54,7 +52,6 @@ export class BotStateRouter {
             message: 'Your R200 voucher has been claimed!',
             memory: [...memory, { voucher: { amount: '200', status: 'claimed' } }],
             read: true,
-            api: null,
             error: null,
           };
         }
@@ -65,7 +62,6 @@ export class BotStateRouter {
             message: 'A support representative will be with you shortly.',
             memory: [...memory, 'requested_support'],
             read: true,
-            api: null,
             error: null,
           };
         }
@@ -75,7 +71,6 @@ export class BotStateRouter {
           message: 'Invalid choice. Please reply with 1 or 2.',
           memory,
           read: true,
-          api: null,
           error: null,
         };
 
@@ -85,7 +80,6 @@ export class BotStateRouter {
           message: 'Session reset. Type "Hi" to begin.',
           memory: [],
           read: true,
-          api: null,
           error: null,
         };
     }
@@ -120,7 +114,6 @@ export const handler = async (
         message: null,
         memory: [],
         read: false,
-        api: null,
         error: 'Invalid Webhook Signature',
       }),
     };
@@ -145,7 +138,6 @@ export const handler = async (
         message: null,
         memory: [],
         read: false,
-        api: null,
         error: 'Invalid JSON Payload',
       }),
     };
