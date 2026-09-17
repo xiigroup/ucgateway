@@ -25,7 +25,7 @@ use Xiigroup\UcGateway\WebhookValidator;
 $sharedSecret = getenv('PORTAL_SHARED_SECRET') ?: 'YOUR_PORTAL_SHARED_SECRET';
 $apiUsername  = getenv('UC_API_USERNAME')      ?: 'YOUR_API_USERNAME';
 $apiPassword  = getenv('UC_API_PASSWORD')      ?: 'YOUR_API_PASSWORD';
-$numberId     = (int) (getenv('UC_NUMBER_ID')  ?: 'YOUR_WEBHOOK_SECRET');
+$numberId     = (int) (getenv('UC_NUMBER_ID')  ?: 'YOUR_UC_NUMBER_ID');
 
 $stateController = [
     'BOT_DECIDE'     => 'botDecide',
