@@ -25,7 +25,7 @@ use Xiigroup\UcGateway\WebhookValidator;
 $sharedSecret = getenv('PORTAL_SHARED_SECRET') ?: 'YOUR_PORTAL_SHARED_SECRET';
 $apiUsername  = getenv('UC_API_USERNAME')      ?: 'YOUR_API_USERNAME';
 $apiPassword  = getenv('UC_API_PASSWORD')      ?: 'YOUR_API_PASSWORD';
-$numberId     = (int) (getenv('UC_NUMBER_ID')  ?: 12345678);
+$numberId     = (int) (getenv('UC_NUMBER_ID')  ?: 'YOUR_WEBHOOK_SECRET');
 
 $stateController = [
     'BOT_DECIDE'     => 'botDecide',
@@ -34,7 +34,6 @@ $stateController = [
 
 class BotApp 
 {
-    public array $api = [];
     public string $sender;
     public string $phone;
     private string $name;
@@ -93,7 +92,6 @@ class BotApp
             footer: $footer
         );
 
-        $this->api = $response['data'] ?? null;
         $this->state = 'BOT_DECIDE';
         $this->read = true; //mark previous message as read
 
@@ -115,7 +113,6 @@ class BotApp
                 header: 'Button Demo',
                 footer: 'Max 3 buttons supported'
             );
-            $this->api = $response['data'] ?? null;
         } elseif ($messageMatch === 'smart text (list)') {
             $response = $this->client->sendWhatsAppList(
                 nid: $this->nid,
@@ -126,7 +123,6 @@ class BotApp
                 header: 'List Demo',
                 footer: 'Interactive List'
             );
-            $this->api = $response['data'] ?? null;
         } elseif ($messageMatch === 'send files') {
             $this->message = 'Please send a media file or document:';
             $this->state = 'FILES_RESPONSE';
@@ -217,6 +213,5 @@ echo json_encode([
     'message' => $app->message ?? null,
     'memory'  => $app->memory  ?? [],
     'read'    => $app->read    ?? false,
-    'api'     => $app->api     ?? [],
     'error'   => $errorMessage ?: null,
 ]);
