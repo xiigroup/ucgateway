@@ -213,7 +213,7 @@ export class UcGatewayClient {
   }
 
   /** Mark Message as Read */
-  async markWhatsappAsRead(nid: number, msgId: string) {
+  async markWhatsAppAsRead(nid: number, msgId: string) {
     return this.request({
       endpoint: 'whatsapp',
       action: 'read',
@@ -225,12 +225,30 @@ export class UcGatewayClient {
   /** Plain Text */
   async sendMoyaAppText(nid: number, to: string, body: string) {
     return this.request({
-      endpoint: 'whatsapp',
+      endpoint: 'moyaapp',
       action: 'send',
       type: 'text',
       nid,
       to,
       body,
+    });
+  }
+
+  /** Interactive Buttons */
+  async sendMoyaAppButtons(
+    nid: number,
+    to: string,
+    body: string,
+    buttons: string[],
+  ) {
+    return this.request({
+      endpoint: 'moyaapp',
+      action: 'send',
+      type: 'buttons',
+      nid,
+      to,
+      body,
+      button: buttons,
     });
   }
   
@@ -242,12 +260,24 @@ export class UcGatewayClient {
     mediaUrl: string
   ) {
     return this.request({
-      endpoint: 'whatsapp',
+      endpoint: 'moyaapp',
       action: 'send',
       type,
       nid,
       to,
       link: mediaUrl,
+    });
+  }
+  
+  /** Request Location */
+  async requestMoyaAppLocation(nid: number, to: string, body: string) {
+    return this.request({
+      endpoint: 'moyaapp',
+      action: 'send',
+      type: 'location_request',
+      nid,
+      to,
+      body,
     });
   }
   
