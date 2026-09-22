@@ -573,6 +573,39 @@ Sends an interactive message with up to 3 quick reply action buttons for fast us
 
 ```
 
+### 2. Request Location Message
+
+Request MoyaApp location. type can be set to location_request or gps_location_request
+
+```json
+{
+  "endpoint": "moyaapp",
+  "action": "send",
+  "type": "location_request", //gps_location_request
+  "nid": 12345678,
+  "to": "27716629021",
+  "body": "Send your location"
+}
+
+```
+
+### 3. Media Message (Image / Document / Audio / Video)
+
+Sends hosted media files via a direct URL link with an optional caption text body.
+
+```json
+{
+  "endpoint": "moyaapp",
+  "action": "send",
+  "type": "image",
+  "nid": 12345678,
+  "to": "27716629021",
+  "link": "https://domain.com/assets/banner.jpg",
+  "body": "Check out our latest release!"
+}
+
+```
+
 ## 📡 SMS API
 
 ### Outgoing SMS Payload
