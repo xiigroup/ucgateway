@@ -663,7 +663,7 @@ Status updates regarding outbound SMS delivery are dispatched asynchronously to 
 ## ⚖️ WhatsApp vs. MoyaApp vs. SMS Feature Comparison
 
 | Feature | WhatsApp | MoyaApp | SMS |
-| --- | --- | --- |
+| --- | --- | --- | --- |
 | **API Version** | `v1.0`<br> | `v1.0`<br> | `v1.0`<br> |
 | **Endpoint Parameter** | `whatsapp`<br> | `moyaapp`<br> | `sms`<br> |
 | **Credentials** | WhatsApp API Credentials | MoyaApp API Credentials | SMS API Credentials |
