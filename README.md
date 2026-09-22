@@ -181,7 +181,7 @@ $client->requestWhatsAppLocation(
 );
 
 // Mark Received Message as Read
-$client->markWhatsappAsRead(
+$client->markWhatsAppAsRead(
     nid: 12345678,
     msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
 );
@@ -364,7 +364,24 @@ curl -X POST "https://uc-api.xiigroup.co.za/" \
 
 ```
 
-#### 2. Send SMS Message (cURL)
+#### 2. Send Moya Message (cURL)
+
+```bash
+curl -X POST "https://uc-api.xiigroup.co.za/" \
+  -u "moyaapp_username:moyaapp_password" \
+  -H "Content-Type: application/json" \
+  -H "HTTP_API_VERSION: v1.0" \
+  -d '{
+    "endpoint": "moyaapp",
+    "action": "send",
+    "nid": 12345678,
+    "to": "27670826044",
+    "body": "Your verification code is: 4829"
+  }'
+
+```
+
+#### 3. Send SMS Message (cURL)
 
 ```bash
 curl -X POST "https://uc-api.xiigroup.co.za/" \
@@ -380,7 +397,6 @@ curl -X POST "https://uc-api.xiigroup.co.za/" \
   }'
 
 ```
-
 ---
 
 ## 💬 WhatsApp Message Payloads
