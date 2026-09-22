@@ -667,7 +667,7 @@ Status updates regarding outbound SMS delivery are dispatched asynchronously to 
 | **API Version** | `v1.0`<br> | `v1.0`<br> | `v1.0`<br> |
 | **Endpoint Parameter** | `whatsapp`<br> | `moyaapp`<br> | `sms`<br> |
 | **Credentials** | WhatsApp API Credentials | MoyaApp API Credentials | SMS API Credentials |
-| **Supported Message Types** | text, templates, lists, cta, buttons, image, document, audio, video, location, location_request, keypad | text, image, document, audio, video, location_request, gps_location_request | text |
+| **Supported Message Types** | text, templates, lists, cta, buttons, image, document, audio, video, location, location_request, keypad, pinpad | text, image, document, audio, video, location_request, gps_location_request | text |
 | **Supported DLR Statuses** | `sent`, `delivered`, `read`<br> | `sent`, `delivered`, `read`, `failed`<br> | `sent`, `delivered`, `undelivered`, `queued`, `failed`<br> |
 | **Webhooks** | Configured via WhatsApp Portal Settings | Configured via MoyaApp Portal Settings | Configured via SMS Portal Settings |
 | **Stateful Engine** | Native `state` & `memory`<br> | Native `state` & `memory`<br> | Native `state` & `memory`<br> |
