@@ -19,27 +19,27 @@
 
 ## 📌 Overview
 
-**UC Gateway** simplifies multi-channel messaging by exposing a single endpoint to handle **WhatsApp** and **SMS**. It features a built-in state engine for serverless, persistent chatbot integrations—eliminating the need for external caching layers like Redis for basic conversational flows.
+**UC Gateway** simplifies multi-channel messaging by exposing a single endpoint to handle **WhatsApp**, **MoyaApp** and **SMS**. It features a built-in state engine for serverless, persistent chatbot integrations—eliminating the need for external caching layers like Redis for basic conversational flows.
 
 
 ```
 
-              ┌─────────────────┐
-              │   Your App /    │
-              │ Serverless Bot  │
-              └────────┬────────┘
-                       │
-         HTTPS POST    │    Incoming Webhook
-      (Send Payload)   │    (With Raw HMAC)
-                       ▼
-              ┌─────────────────┐
-              │   UC Gateway    │
-              └────────┬────────┘
-                       │
-     ┌─────────────────┴─────────────────┐
-     ▼                                   ▼
+                    ┌─────────────────┐
+                    │   Your App /    │
+                    │ Serverless Bot  │
+                    └────────┬────────┘
+                             │
+               HTTPS POST    │    Incoming Webhook
+            (Send Payload)   │    (With Raw HMAC)
+                             ▼
+                    ┌─────────────────┐
+                    │   UC Gateway    │
+                    └────────┬────────┘
+                             │
+     ┌───────────────────────|───────────────────────┐
+     ▼                       ▼                       ▼
 
-🟢 WhatsApp Cloud              📡 SMS Telco Network
+🟢 WhatsApp Cloud      🔵 MoyaApp        📡 SMS Telco Network
 
 ```
 
@@ -47,7 +47,7 @@
 
 ## ✨ Key Features
 
-- **Unified Messaging Interface:** Send text, templates, interactive lists, CTA links, quick reply buttons, media, and locations across WhatsApp & SMS.
+- **Unified Messaging Interface:** Send text, templates, interactive lists, CTA links, quick reply buttons, media, and locations across WhatsApp, MoyaApp & SMS.
 - **Built-in Chatbot State & Memory:** Native `state` and `memory` objects returned inside webhooks to easily maintain user sessions.
 - **Synchronous Webhook Replies:** Respond directly to an incoming webhook with a `200 OK` JSON payload to issue an instant messaging reply.
 - **Granular Webhook Separation:** Independent endpoints for incoming messages vs. Delivery Receipts (DLR / Statuses).
@@ -64,7 +64,7 @@
 | **Authentication** | HTTP Basic Auth (`Authorization: Basic <Base64(username:password)>`) |
 | **Data Format** | JSON (`Content-Type: application/json`) |
 
-> ⚠️ **Note:** WhatsApp and SMS use **separate credentials** and **separate portal-configured Number IDs (`nid`)**.
+> ⚠️ **Note:** WhatsApp, MoyaApp and SMS use **separate credentials** and **separate portal-configured Number IDs (`nid`)**.
 
 ---
 
@@ -184,6 +184,28 @@ $client->requestWhatsAppLocation(
 $client->markWhatsappAsRead(
     nid: 12345678,
     msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
+);
+```
+
+```
+$smsClient = new Xiigroup\UcGateway\UcGatewayClient(
+    username: 'YOUR_SMS_USERNAME',
+    password: 'YOUR_SMS_PASSWORD'
+);
+
+// Plain Text
+$client->sendMoyaAppText(
+    nid: 12345678,
+    to: '27716629021',
+    body: 'Hello from UC Gateway PHP SDK!',
+);
+
+// Quick Reply Buttons
+$client->sendMoyaAppButtons(
+    nid: 12345678,
+    to: '27716629021',
+    body: 'How can we assist you today?',
+    buttons: ['Billing Inquiry', 'Technical Support']
 );
 ```
 
