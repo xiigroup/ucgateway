@@ -4,7 +4,7 @@
 
 **Official Integration SDK & Technical Specification for XII Group UC Gateway**
 
-*A unified, stateful HTTP interface for sending WhatsApp and SMS communications.*
+*A unified, stateful HTTP interface for sending WhatsApp, MoyaApp and SMS communications.*
 
 [![API Version](https://img.shields.io/badge/API_Version-v1.0-blue.svg?style=for-the-badge)](https://uc-api.xiigroup.co.za/)
 [![Transport](https://img.shields.io/badge/Transport-HTTPS_/_TLS_1.2+-green.svg?style=for-the-badge)](https://uc-api.xiigroup.co.za/)
