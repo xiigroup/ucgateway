@@ -323,7 +323,7 @@ async function sendWhatsAppExamples() {
 );
 
   // Mark Received Message as Read
-  await client.markAsRead(nid, 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJEOTAzMDUyNzZCNUVFNzg1RDkA');
+  await client.markWhatsAppAsRead(nid, 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJEOTAzMDUyNzZCNUVFNzg1RDkA');
 }
 ```
 
