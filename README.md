@@ -11,7 +11,7 @@
 [![Build Status](https://img.shields.io/badge/Status-Active-brightgreen.svg?style=for-the-badge)](#)
 [![Publisher](https://img.shields.io/badge/Publisher-XII_Group-orange.svg?style=for-the-badge)](https://github.com/xiigroup)
 
-[Key Features](#-key-features) • [Quick Start](#-quick-start) • [Whatsapp API](#-whatsapp-api) • [SMS API](#-sms-api) • [Webhooks & Security](#-webhooks--signature-validation) • [Stateful Chatbots](#-stateful-chatbot-engine) • [Support](#-author--support)
+[Key Features](#-key-features) • [Quick Start](#-quick-start) • [Whatsapp API](#-whatsapp-api) • [Moya API](#-moyaapp-api) • [SMS API](#-sms-api) • [Webhooks & Security](#-webhooks--signature-validation) • [Stateful Chatbots](#-stateful-chatbot-engine) • [Support](#-author--support)
 
 </div>
 
@@ -547,6 +547,28 @@ Mark received message as Read by sending Whatsapp Message ID in msg_id field.
   "type": "read",
   "nid": 12345678,
   "msg_id": "wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJEOTAzMDUyNzZCNUVFNzg1RDkA"
+}
+
+```
+
+## 📡 MoyaApp API
+
+### 1. Quick Reply Buttons Message
+
+Sends an interactive message with up to 3 quick reply action buttons for fast user responses. does not support header, footer & msg_id.
+
+```json
+{
+  "endpoint": "moyaapp",
+  "action": "send",
+  "type": "buttons",
+  "nid": 12345678,
+  "to": "27716629021",
+  "body": "How can we assist you today?",
+  "button": [
+    "Billing Inquiry",
+    "Technical Support"
+  ]
 }
 
 ```
