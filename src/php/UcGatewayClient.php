@@ -162,7 +162,7 @@ class UcGatewayClient
         return $this->request($payload);
     }
 
-    public function markAsRead(int $nid, string $msgId): array 
+    public function markWhatsappAsRead(int $nid, string $msgId): array 
     {
         $payload = [
             'endpoint' => 'whatsapp',
@@ -174,6 +174,35 @@ class UcGatewayClient
         return $this->request($payload);
     }
 
+    public function sendMoyaAppText(int $nid, string $to, string $body): array 
+    {
+        $payload = [
+            'endpoint' => 'moyaapp',
+            'action' => 'send',
+            'type' => 'text',
+            'nid' => $nid,
+            'to' => $to,
+            'body' => $body
+        ];
+
+        return $this->request($payload);
+    }
+    
+    public function sendMoyaAppButtons(int $nid, string $to, string $body, array $buttons): array 
+    {
+        $payload = [
+            'endpoint' => 'moyaapp',
+            'action' => 'send',
+            'type' => 'buttons',
+            'nid' => $nid,
+            'to' => $to,
+            'body' => $body,
+            'button' => $buttons
+        ];
+
+        return $this->request($payload);
+    }
+    
     public function sendSms(int $nid, string $to, string $body): array 
     {
         return $this->request([
