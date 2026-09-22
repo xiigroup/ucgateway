@@ -11,7 +11,7 @@
 [![Build Status](https://img.shields.io/badge/Status-Active-brightgreen.svg?style=for-the-badge)](#)
 [![Publisher](https://img.shields.io/badge/Publisher-XII_Group-orange.svg?style=for-the-badge)](https://github.com/xiigroup)
 
-[Key Features](#-key-features) • [Quick Start](#-quick-start) • [Message Payloads](#-whatsapp-message-payloads) • [SMS API](#-sms-api) • [Webhooks & Security](#-webhooks--signature-validation) • [Stateful Chatbots](#-stateful-chatbot-engine) • [Support](#-author--support)
+[Key Features](#-key-features) • [Quick Start](#-quick-start) • [Whatsapp API](#-whatsapp-api) • [SMS API](#-sms-api) • [Webhooks & Security](#-webhooks--signature-validation) • [Stateful Chatbots](#-stateful-chatbot-engine) • [Support](#-author--support)
 
 </div>
 
@@ -399,7 +399,7 @@ curl -X POST "https://uc-api.xiigroup.co.za/" \
 ```
 ---
 
-## 💬 WhatsApp Message Payloads
+## 💬 WhatsApp API
 
 Below are the JSON payload structures for various WhatsApp message types supported by the gateway.
 
