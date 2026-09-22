@@ -181,7 +181,7 @@ $client->requestWhatsAppLocation(
 );
 
 // Mark Received Message as Read
-$client->markAsRead(
+$client->markWhatsappAsRead(
     nid: 12345678,
     msgId: 'wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJCM0I3QjFGRUNDRTVGMUREMjkA',
 );
