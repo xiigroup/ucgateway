@@ -202,6 +202,20 @@ class UcGatewayClient
 
         return $this->request($payload);
     }
+
+    public function sendMoyaAppMedia(int $nid, string $to, string $type, string $mediaUrl): array 
+    {
+        $payload = [
+            'endpoint' => 'moyaapp',
+            'action' => 'send',
+            'type' => $type,
+            'nid' => $nid,
+            'to' => $to,
+            'link' => $mediaUrl
+        ];
+
+        return $this->request($payload);
+    }
     
     public function sendSms(int $nid, string $to, string $body): array 
     {
