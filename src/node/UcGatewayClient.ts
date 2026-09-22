@@ -213,7 +213,7 @@ export class UcGatewayClient {
   }
 
   /** Mark Message as Read */
-  async markAsRead(nid: number, msgId: string) {
+  async markWhatsappAsRead(nid: number, msgId: string) {
     return this.request({
       endpoint: 'whatsapp',
       action: 'read',
@@ -222,6 +222,35 @@ export class UcGatewayClient {
     });
   }
 
+  /** Plain Text */
+  async sendMoyaAppText(nid: number, to: string, body: string) {
+    return this.request({
+      endpoint: 'whatsapp',
+      action: 'send',
+      type: 'text',
+      nid,
+      to,
+      body,
+    });
+  }
+  
+  /** Media Message (image, video, audio, document) */
+  async sendMoyaAppMedia(
+    nid: number,
+    to: string,
+    type: 'image' | 'video' | 'audio' | 'document',
+    mediaUrl: string
+  ) {
+    return this.request({
+      endpoint: 'whatsapp',
+      action: 'send',
+      type,
+      nid,
+      to,
+      link: mediaUrl,
+    });
+  }
+  
   /** SMS Send */
   async sendSms(nid: number, to: string, body: string) {
     return this.request({
