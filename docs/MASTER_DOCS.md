@@ -1,64 +1,40 @@
-# UC Gateway WhatsApp & SMS API — Master Technical Documentation & Integration Guide
+# UC Gateway API Documentation
 
-This document serves as the official technical specification for integrating with XII Group’s **UC Gateway WhatsApp and SMS API**.
+**API Version:** `v1.0`
+**Author:** Sipho Selabe
+**Email:** [sg.selabe@xiigroup.co.za](mailto:sg.selabe@xiigroup.co.za)`
 
-**API Version:** `v1.0`  
-**Author:** Sipho Selabe  
-**Email:** sg.selabe@xiigroup.co.za  
-**Developer Resources:** https://github.com/xiigroup/ucgateway
+UC Gateway is a messaging gateway supporting **WhatsApp, MoyaApp and SMS** through a unified API.
 
----
+## Developer Resources
 
-## 1. System Overview & Architecture
+GitHub:
 
-UC Gateway provides a programmatic HTTP interface for sending and receiving WhatsApp and SMS communications.
-
-### Key Capabilities
-
-- WhatsApp messaging
-- SMS messaging
-- Plain text messages
-- WhatsApp templates
-- Interactive CTA messages
-- Interactive lists
-- Quick-reply buttons
-- Media messages
-- Location messages
-- Location requests
-- Keypad interfaces
-- Message replies
-- Incoming message webhooks
-- Message status webhooks
-- Webhook signature validation
-- Chatbot state and persistent memory
-
-The API currently uses version **`v1.0`** for both WhatsApp and SMS.
+https://github.com/xiigroup
 
 ---
 
-# 2. Portal Setup & Prerequisites
+# 1. Portal Setup
 
-Before using the API, the required configuration must be completed through the UC Gateway portal.
-
-### Portal Requirements
+Before using the API, configure the required services through the UC Gateway portal.
 
 The portal provides:
 
-- WhatsApp template creation
-- WhatsApp Number ID (`nid`)
-- API credentials
-- WhatsApp webhook configuration
-- SMS webhook configuration
-- SMS credentials
-- Basic chat GUI
+* WhatsApp template creation
+* Internal Number ID (`nid`) retrieval
+* API credential generation
+* WhatsApp webhook configuration
+* WhatsApp status webhook configuration
+* MoyaApp webhook configuration
+* MoyaApp status webhook configuration
+* SMS webhook configuration
+* SMS status webhook configuration
+* SMS credential generation
+* Basic chat GUI
 
-### WhatsApp Templates
+## Internal Number ID
 
-WhatsApp templates must be created through the portal before they can be sent using the API.
-
-### Number ID
-
-The `nid` is the internal Number ID assigned to the WhatsApp or SMS service.
+The `nid` is the internal Number ID assigned to a service.
 
 The `nid` is **8 digits long**.
 
@@ -68,100 +44,65 @@ Example:
 12345678
 ```
 
----
-
-# 3. Base Configuration & Global Parameters
-
-## Environment
-
-**Base Endpoint:**
-
-```text
-https://uc-api.xiigroup.co.za/
-```
-
-**Transport:** HTTPS
-
-**TLS:** TLS 1.2 or higher
+WhatsApp templates must be created through the UC Gateway portal before they can be sent using the template API.
 
 ---
 
-## Authentication
+# 2. Authentication
 
-API requests require HTTP Basic Authentication.
-
-Credentials are supplied using:
+UC Gateway uses HTTP Basic Authentication.
 
 ```http
 Authorization: Basic <Base64(username:password)>
 ```
 
-Example:
-
-```http
-Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
-```
-
 Credentials are generated through the UC Gateway portal.
 
-WhatsApp and SMS use separate credentials.
+Each channel has its own credentials:
+
+* WhatsApp API Credentials
+* MoyaApp API Credentials
+* SMS API Credentials
 
 ---
 
-## Request Headers
+# 3. API Version
 
-| Header | Required | Description |
-|---|---|---|
-| `Authorization` | Yes | HTTP Basic Authentication |
-| `HTTP_API_VERSION` | No | API version |
-| `Content-Type` | Conditional | Required when sending a JSON request body |
+The current API version is:
 
-Example:
+```text
+v1.0
+```
+
+The same API version is used for:
+
+* WhatsApp
+* MoyaApp
+* SMS
+
+---
+
+# 4. Request Headers
+
+For JSON requests:
 
 ```http
-Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+Authorization: Basic <Base64(username:password)>
 HTTP_API_VERSION: v1.0
 Content-Type: application/json
 ```
 
-If `HTTP_API_VERSION` is omitted, the default is `latest`.
-
 ---
 
-# 4. Integration Modes
+# 5. Integration Modes
 
-The API supports three request formats.
+UC Gateway supports:
 
-| Method | Payload | Description |
-|---|---|---|
-| `GET` | URL query | Parameters are passed in the URL |
-| `POST` | URL query | Parameters are passed in the URL query string |
-| `POST` | JSON | Parameters are passed in the JSON request body |
+1. HTTP GET
+2. HTTP POST with query parameters
+3. HTTP POST with JSON data
 
----
-
-## 4.1 HTTP GET
-
-```http
-GET /?endpoint=whatsapp&action=send&type=text&nid=12345678&to=27716629021&body=Hello HTTP/1.1
-Host: uc-api.xiigroup.co.za
-Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
-HTTP_API_VERSION: v1.0
-```
-
----
-
-## 4.2 HTTP POST — Query String
-
-```bash
-curl -X POST "https://uc-api.xiigroup.co.za/?endpoint=whatsapp&action=send&type=text&nid=12345678&to=27716629021&body=Hello" \
-  -u "username:password" \
-  -H "HTTP_API_VERSION: v1.0"
-```
-
----
-
-## 4.3 HTTP POST — JSON Data
+### POST JSON Example
 
 ```bash
 curl -X POST "https://uc-api.xiigroup.co.za/" \
@@ -174,25 +115,23 @@ curl -X POST "https://uc-api.xiigroup.co.za/" \
     "type": "text",
     "nid": 12345678,
     "to": "27716629021",
-    "body": "Hello"
+    "body": "Hello from UC Gateway!"
   }'
 ```
 
 ---
 
-# 5. Mandatory Core Parameters
+# WhatsApp API
 
-The following parameters are used by API requests.
+# 6. Core Parameters
 
-| Parameter | Type | Required | Description | Example |
-|---|---|---|---|---|
-| `endpoint` | string | Yes | Service endpoint | `"whatsapp"` |
-| `action` | string | Yes | Gateway operation | `"send"` |
-| `nid` | integer | Yes | Internal 8-digit Number ID | `12345678` |
-| `to` | string | Yes | Recipient MSISDN | `"27716629021"` |
-| `type` | string | Yes | Message type | `"text"` |
-
-### `to`
+| Parameter  | Type    | Required | Description                |
+| ---------- | ------- | -------: | -------------------------- |
+| `endpoint` | string  |      Yes | API service, `whatsapp`    |
+| `action`   | string  |      Yes | Operation, e.g. `send`     |
+| `nid`      | integer |      Yes | 8-digit internal Number ID |
+| `to`       | string  |      Yes | Recipient MSISDN           |
+| `type`     | string  |      Yes | Message type               |
 
 Recipient numbers must contain the country code and must not contain `+`.
 
@@ -204,27 +143,9 @@ Example:
 
 ---
 
-# 6. WhatsApp API
+# 7. Plain Text
 
-WhatsApp requests use:
-
-```json
-{
-  "endpoint": "whatsapp"
-}
-```
-
----
-
-# 7. WhatsApp Plain Text
-
-**Type:**
-
-```text
-text
-```
-
-Example:
+**Type:** `text`
 
 ```json
 {
@@ -239,17 +160,13 @@ Example:
 
 ---
 
-# 8. WhatsApp Template
+# 8. Templates
 
-**Type:**
+**Type:** `template`
 
-```text
-template
-```
+Templates must first be created through the UC Gateway portal.
 
-Templates must be created through the UC Gateway portal.
-
-Example:
+Example with one header variable and one body variable:
 
 ```json
 {
@@ -273,23 +190,23 @@ Example:
 }
 ```
 
-### Template Variables
+The number of variables supplied in the API payload must match the number of variables configured in the template.
 
-The number of variables supplied in the API request must match the number of variables configured in the template.
+For example, if a template contains:
 
-Header and body variables are handled separately.
+* 1 header variable
+* 1 body variable
+
+the API payload must contain:
+
+* 1 object in `header`
+* 1 object in `body`
 
 ---
 
-# 9. WhatsApp CTA
+# 9. CTA
 
-**Type:**
-
-```text
-cta
-```
-
-Example:
+**Type:** `cta`
 
 ```json
 {
@@ -298,37 +215,62 @@ Example:
   "type": "cta",
   "nid": 12345678,
   "to": "27716629021",
-  "link": "https://wa.me/",
-  "header": "https://domain.com/banner.jpg",
-  "body": "Check out our new offerings!",
+  "link": "https://domain.com",
+  "header": "hello",
+  "body": "Visit our website",
   "footer": "XII Group"
 }
 ```
 
 ---
 
-# 10. WhatsApp List
+# 10. List Messages
 
-**Type:**
+**Type:** `list`
 
-```text
-list
+A list can contain list items with descriptions or list items without descriptions.
+
+### List With Description
+
+```json
+{
+  "endpoint": "whatsapp",
+  "action": "send",
+  "type": "list",
+  "nid": 12345678,
+  "to": "27716629021",
+  "header": "hello",
+  "body": "body",
+  "footer": "footer",
+  "list": {
+    "item 1 description": "item 1",
+    "item 2 description": "item 2"
+  }
+}
 ```
 
-A list can contain:
+### List Without Description
 
-- A list title only
-- A list title and list body/description
+```json
+{
+  "endpoint": "whatsapp",
+  "action": "send",
+  "type": "list",
+  "nid": 12345678,
+  "to": "27716629021",
+  "header": "hello",
+  "body": "body",
+  "footer": "footer",
+  "list": {
+    "1": "item 1",
+    "2": "item 2"
+  }
+}
+```
 
-The `label` parameter can be used to change the list button label.
+### Custom List Label
 
-If `label` is not provided, the default list label is used.
-
----
-
-# 11. List Button Label
-
-Example:
+The list button label can be changed using `label`.
 
 ```json
 {
@@ -348,67 +290,13 @@ Example:
 }
 ```
 
-`label` sets the name displayed on the list button.
-
-If omitted, the gateway uses the default list label.
+If `label` is not provided, the default list label is used.
 
 ---
 
-# 12. List With Descriptions
+# 11. Buttons
 
-Example:
-
-```json
-{
-  "endpoint": "whatsapp",
-  "action": "send",
-  "type": "list",
-  "nid": 12345678,
-  "to": "27716629021",
-  "header": "hello",
-  "body": "body",
-  "footer": "footer",
-  "list": {
-    "item 1 description": "item 1",
-    "item 2 description": "item 2"
-  }
-}
-```
-
----
-
-# 13. List Without Descriptions
-
-Example:
-
-```json
-{
-  "endpoint": "whatsapp",
-  "action": "send",
-  "type": "list",
-  "nid": 12345678,
-  "to": "27716629021",
-  "header": "hello",
-  "body": "body",
-  "footer": "footer",
-  "list": {
-    "1": "item 1",
-    "2": "item 2"
-  }
-}
-```
-
----
-
-# 14. WhatsApp Buttons
-
-**Type:**
-
-```text
-buttons
-```
-
-Example:
+**Type:** `buttons`
 
 ```json
 {
@@ -417,31 +305,24 @@ Example:
   "type": "buttons",
   "nid": 12345678,
   "to": "27716629021",
-  "header": "hello",
   "body": "How can we assist you today?",
-  "footer": "footer",
   "button": [
-    "button 1",
-    "button 2"
+    "Billing Inquiry",
+    "Technical Support"
   ]
 }
 ```
 
 ---
 
-# 15. WhatsApp Media
+# 12. Media Messages
 
-Supported media types include:
+Supported WhatsApp media types include:
 
-```text
-image
-video
-audio
-document
-sticker
-```
-
-Media is supplied using a hosted URL.
+* `image`
+* `document`
+* `audio`
+* `video`
 
 Example:
 
@@ -457,21 +338,11 @@ Example:
 }
 ```
 
-`body` may be used as a caption where supported.
-
 ---
 
-# 16. WhatsApp Location
+# 13. Location
 
-**Type:**
-
-```text
-location
-```
-
-A location message contains latitude and longitude.
-
-Example:
+**Type:** `location`
 
 ```json
 {
@@ -489,21 +360,11 @@ Example:
 
 ---
 
-# 17. WhatsApp Location Request
+# 14. Location Request
 
-**Type:**
+**Type:** `location_request`
 
-```text
-location_request
-```
-
-A location request asks the WhatsApp user to share their location.
-
-The outgoing location request contains a `body`.
-
-It does **not** require latitude or longitude.
-
-Example:
+WhatsApp `location_request` displays an interactive map to the user.
 
 ```json
 {
@@ -516,18 +377,18 @@ Example:
 }
 ```
 
-When the user responds with their location, the incoming webhook contains the latitude and longitude.
+The application does not provide latitude or longitude when sending the request.
+
+The user's location is returned through the incoming webhook.
 
 ---
 
-# 18. WhatsApp Keypad
+# 15. Keypad / PIN Pad
 
-Supported keypad types include:
+Supported message types include:
 
-```text
-pinpad
-dialpad
-```
+* `keypad`
+* `pinpad`
 
 Example:
 
@@ -538,23 +399,15 @@ Example:
   "type": "pinpad",
   "nid": 12345678,
   "to": "27716629021",
-  "body": "Enter your 4-digit PIN"
+  "body": "Enter your PIN"
 }
 ```
 
 ---
 
-# 19. Replying to WhatsApp Messages
+# 16. WhatsApp Message Replies
 
-A previously received WhatsApp message can be replied to by passing its message ID as `msg_id` in the outgoing API request.
-
-Example:
-
-```text
-msg_id=wamid.HBgLMjc3MTY2MjkwMjEVAgARGBJEOTAzMDUyNzZCNUVFNzg1RDkA
-```
-
-JSON example:
+The `msg_id` parameter can be supplied to reply to a previously sent WhatsApp message.
 
 ```json
 {
@@ -568,13 +421,15 @@ JSON example:
 }
 ```
 
+`msg_id` is supported when sending WhatsApp messages.
+
+**MoyaApp does not support `msg_id` when sending messages.**
+
 ---
 
-# 20. Mark Incoming Messages as Read
+# 17. Mark WhatsApp Messages as Read
 
-Any received WhatsApp message can be marked as read through the API.
-
-Example:
+Received WhatsApp messages can be marked as read.
 
 ```json
 {
@@ -587,28 +442,28 @@ Example:
 
 ---
 
-# 21. Incoming WhatsApp Webhooks
+# WhatsApp Webhooks
 
-UC Gateway sends incoming WhatsApp messages to the webhook configured on the portal.
+# 18. Incoming WhatsApp Webhooks
 
-Webhook payloads may include:
+UC Gateway can send incoming WhatsApp events to the message webhook configured in the portal.
 
-- Text messages
-- Reactions
-- Locations
-- Images
-- Documents
-- Audio
-- Video
-- Stickers
+Supported incoming message types include:
 
-The incoming webhook also provides chatbot `state` and `memory`.
+* Text
+* Reaction
+* Location
+* Image
+* Document
+* Audio
+* Video
+* Sticker
 
 ---
 
-# 22. Webhook Headers
+# 19. Webhook Headers
 
-Webhook requests contain headers used to validate authenticity.
+Every webhook includes the following headers.
 
 Example:
 
@@ -619,94 +474,51 @@ X-Uc-Signature: 74b74bc775eda061a4d87af1311d2dce01b7500006b9f2df5abfc49c05caed76
 X-Uc-Timestamp: 1789306231
 ```
 
-### Headers
-
-| Header | Description |
-|---|---|
-| `X-Uc-Nonce` | 32-character nonce |
-| `X-Uc-Signature` | HMAC SHA-256 signature |
-| `X-Uc-Timestamp` | Timestamp supplied with the webhook for additional verification |
+| Header           | Description                           |
+| ---------------- | ------------------------------------- |
+| `Accept`         | Request accept header                 |
+| `X-Uc-Nonce`     | 32-character nonce                    |
+| `X-Uc-Signature` | HMAC-SHA256 signature                 |
+| `X-Uc-Timestamp` | Timestamp for additional verification |
 
 ---
 
-# 23. Webhook Signature Validation
+# 20. Webhook Signature Verification
 
-The webhook signature is calculated using the **complete JSON payload as received**.
+The webhook signature must be calculated using the **complete JSON payload exactly as received**.
 
-The signature calculation must use the **raw JSON request body**, not individual JSON fields.
+The application must use the raw HTTP request body.
 
-### Signature Algorithm
-
-The gateway uses:
+The signature is calculated using:
 
 ```text
-HMAC SHA-256
+HMAC-SHA256(raw JSON payload, shared secret)
 ```
 
-The HMAC key is the shared secret obtained from the UC Gateway portal.
+The shared secret is generated in the UC Gateway portal.
 
-### Signing Input
+### Important
 
-The signing input is:
+The JSON must not be reconstructed or re-serialized before calculating the signature.
 
-```text
-The complete raw JSON payload exactly as received by the webhook.
-```
+The signature must be calculated from the original raw request body.
 
-For example, if the webhook body is:
+### Verification
 
-```json
-{
-  "id": "wamid.example123",
-  "sender": "27128801496",
-  "from": "27716629021",
-  "name": "Dev",
-  "type": "text",
-  "message": "hi",
-  "state": "LOGIN_DECIDE",
-  "memory": {
-    "login": "",
-    "voucher": {
-      "amount": "200"
-    }
-  }
-}
-```
-
-the HMAC must be calculated over the **entire JSON request body**.
-
-Do not construct the signature input by concatenating:
-
-```text
-sender
-from
-name
-id
-type
-message
-```
-
-Do not extract and rebuild the payload before calculating the signature.
-
-The application should validate the signature against the raw request body as received.
-
-### Verification Process
-
-1. Receive the webhook request.
+1. Receive the webhook.
 2. Capture the raw JSON request body.
-3. Retrieve the shared secret configured for the webhook.
-4. Calculate HMAC-SHA256 using the raw JSON body as the message.
+3. Retrieve the shared secret.
+4. Calculate HMAC-SHA256 using the raw JSON body.
 5. Compare the calculated signature with `X-Uc-Signature`.
-6. Use constant-time comparison when comparing signatures.
-7. Use `X-Uc-Nonce` and `X-Uc-Timestamp` as additional verification data.
+6. Use a constant-time comparison.
+7. Validate the `X-Uc-Nonce`.
+8. Validate the `X-Uc-Timestamp`.
 
-The exact raw JSON representation received by the application must be preserved for signature calculation.
+If verification fails, reject the request as unauthorized.
 
 ---
 
-# 24. WhatsApp Text Webhook
-
-Example:
+# 21. Text Webhook
 
 ```json
 {
@@ -716,70 +528,60 @@ Example:
   "name": "",
   "type": "text",
   "message": "hi",
-  "state": "LOGIN_DECIDE",
-  "memory": {
-    "login": "",
-    "voucher": {
-      "amount": "200"
-    }
-  }
+  "state": "HANDLE_START",
+  "memory": []
 }
 ```
 
 ---
 
-# 25. WhatsApp Context
+# 22. WhatsApp Message Context
 
-For normal WhatsApp message webhooks, `context` is used when the incoming message is a reply to a previously sent message.
+When an incoming WhatsApp message is a reply to a previously sent message, the webhook contains `context`.
 
-`context` is only present when the message webhook is a reply.
+```json
+{
+  "id": "wamid.HBgLMjc2MDMxNjY0MjcVAgASGCBBQzkwNTkxQjBDMjkxM0E2QTJBMjg1QzA0NjlENDNDMgA=",
+  "context": {
+    "id": "wamid.HBgLMjc2MDMxNjY0MjcVAgARGBJERjNDRjA3NDJCMjZBRDVGNjYA",
+    "from": "27128801496"
+  },
+  "type": "text",
+  "sender": "27128801496",
+  "from": "27603166427",
+  "name": "Lavia💋",
+  "message": "Hi",
+  "state": "START",
+  "memory": []
+}
+```
 
-It replaces `msg_id` for this purpose in normal WhatsApp message webhooks.
-
-Applications should not expect `context` to be present on every incoming message.
+`context` is present only when the incoming message is a reply to a previously sent message.
 
 ---
 
-# 26. WhatsApp Reaction Webhook
+# 23. Reaction Webhook
 
 Reaction webhooks retain `msg_id`.
-
-`msg_id` identifies the previous message that the user reacted to.
-
-Example:
 
 ```json
 {
   "id": "wamid.HBgLMjc3MTY2MjkwMjEVAgASGCBBQ0Q3N0M0M0EyNEEyMkZFQTdBQTkwQ0QxQjA5NUFGNQA=",
-  "msg_id": "wamid.HBgLMjc3MTY2MjkwMjEVAgASGCBBQ0QxOTlGMkUwN0JDQzA0MUFDNkM1OTA1OTFGQjg4MAA=",
+  "msg_id": "wamid.HBgLMjc3MTY2MjkwMjEVAgASGCBBQ0UxOTlGMkUwN0JDQzA0MUFDNkM1OTA1OTFGQjg4MAA=",
   "type": "reaction",
   "emoji": "😂",
   "sender": "27128801496",
   "from": "27716629021",
   "name": "Dev",
   "message": "",
-  "state": "LOGIN_DECIDE",
-  "memory": {
-    "login": "",
-    "voucher": {
-      "amount": "200"
-    }
-  }
+  "state": "HANDLE_START",
+  "memory": []
 }
 ```
 
-For reactions:
-
-- `msg_id` is always retained.
-- `msg_id` identifies the message being reacted to.
-- `emoji` contains the reaction.
-- `message` is an empty string in the reaction example.
-
 ---
 
-# 27. WhatsApp Location Webhook
-
-Example:
+# 24. Location Webhook
 
 ```json
 {
@@ -794,35 +596,21 @@ Example:
     "latitude": -25.7116577,
     "longitude": 28.4156354
   },
-  "state": "LOGIN_DECIDE",
-  "memory": {
-    "login": "",
-    "voucher": {
-      "amount": "200"
-    }
-  }
+  "state": "HANDLE_START",
+  "memory": []
 }
 ```
 
-The received location contains:
-
-- `name`
-- `address`
-- `latitude`
-- `longitude`
-
 ---
 
-# 28. WhatsApp File Webhook
+# 25. File Webhook
 
-The file webhook can be used for:
+Files can be received as:
 
-```text
-image
-document
-audio
-video
-```
+* `image`
+* `document`
+* `audio`
+* `video`
 
 Example:
 
@@ -842,25 +630,22 @@ Example:
   "from": "27716629021",
   "name": "Dev",
   "message": "",
-  "state": "LOGIN_DECIDE",
-  "memory": {
-    "login": "",
-    "voucher": {
-      "amount": "200"
-    }
-  }
+  "state": "HANDLE_START",
+  "memory": []
 }
 ```
 
-### File URL Structure
+---
 
-The general file URL structure is:
+# 26. File URL Format
+
+All files received through the webhook use:
 
 ```text
 https://cdn.xiigroup.co.za/media/<8digit_INTERNAL_NUMBER_ID>/<SENDER_NUMBER>/<FILE_TYPE>/YYYY/MM/<FILENAME>
 ```
 
-Example structure:
+Example:
 
 ```text
 https://cdn.xiigroup.co.za/media/12345678/27603166427/image/2026/09/1776522790138158.jpeg
@@ -868,9 +653,7 @@ https://cdn.xiigroup.co.za/media/12345678/27603166427/image/2026/09/177652279013
 
 ---
 
-# 29. WhatsApp Sticker Webhook
-
-Example:
+# 27. Sticker Webhook
 
 ```json
 {
@@ -888,46 +671,45 @@ Example:
   "from": "27716629021",
   "name": "Dev",
   "message": "",
-  "state": "LOGIN_DECIDE",
-  "memory": {
-    "login": "",
-    "voucher": {
-      "amount": "200"
-    }
-  }
+  "state": "HANDLE_START",
+  "memory": []
 }
 ```
 
 ---
 
-# 30. Chatbot State & Memory
+# 28. State and Memory
 
-Incoming webhook payloads contain:
+All three channels support native:
 
-```text
-state
-memory
-```
+* `state`
+* `memory`
 
-These fields are useful for maintaining chatbot context.
+These fields are useful for stateful applications and chatbots.
 
-### State
+## State
 
-`state` represents the current chatbot/application state.
+`state` represents the current application or chatbot state.
 
 Example:
 
 ```text
-LOGIN_DECIDE
+HANDLE_START
 ```
 
-### Memory
+The actual state depends on the application or chatbot developer.
 
-`memory` stores persistent chatbot data.
+## Memory
 
-Memory can be updated or deleted.
+`memory` contains persistent application data.
 
 Example:
+
+```json
+[]
+```
+
+or:
 
 ```json
 {
@@ -938,25 +720,21 @@ Example:
 }
 ```
 
-`state` and `memory` are not set through the normal message-sending API.
+Memory can be:
 
-They are provided through webhook payloads and can be updated when an automated chatbot processes the webhook.
+* Updated
+* Deleted
+* Used for persistent application data
+
+The structure depends on the application or chatbot developer.
 
 ---
 
-# 31. Automated Chatbot Response
+# 29. Automated Chatbot Response
 
-A webhook receiver does **not** have to respond.
+A webhook receiver does not have to reply.
 
-If the receiving application is an automated chatbot, it can respond to the webhook request with updated:
-
-- `state`
-- `message`
-- `memory`
-- `api`
-- `error`
-
-Example:
+If the receiving application is an automated chatbot, it can return:
 
 ```json
 {
@@ -968,15 +746,18 @@ Example:
 }
 ```
 
-Applications that are not automated chatbots do not need to provide this chatbot response.
+The chatbot can use the response to update:
+
+* `state`
+* `memory`
+
+If the application is not an automated chatbot, no chatbot response is required.
 
 ---
 
-# 32. Chatbot Error Response
+# 30. Chatbot Error Response
 
-If an automated chatbot experiences an error, `error` must contain the error information.
-
-Example:
+If an automated chatbot encounters an error:
 
 ```json
 {
@@ -988,25 +769,19 @@ Example:
 }
 ```
 
-Developer chatbot examples:
-
-```text
-https://github.com/xiigroup
-```
+The `error` field should contain the error experienced by the chatbot.
 
 ---
 
-# 33. WhatsApp Status Webhook
+# 31. WhatsApp Status Webhook
 
-After sending a WhatsApp message through the API, UC Gateway sends a status webhook.
+After sending a WhatsApp message, UC Gateway sends a status webhook.
 
-Supported WhatsApp status values are:
+Supported statuses:
 
-```text
-sent
-delivered
-read
-```
+* `sent`
+* `delivered`
+* `read`
 
 Example:
 
@@ -1020,49 +795,15 @@ Example:
 }
 ```
 
-The `id` identifies the message.
+The `id` is the message ID.
+
+The WhatsApp status webhook URL is configured separately from the WhatsApp message webhook.
 
 ---
 
-# 34. WhatsApp Webhook Configuration
+# SMS API
 
-The WhatsApp webhook URLs are configured through the UC Gateway portal.
-
-The incoming message webhook and status webhook are configured separately.
-
----
-
-# 35. SMS API
-
-UC Gateway also provides SMS functionality.
-
-SMS uses the same API endpoint:
-
-```text
-https://uc-api.xiigroup.co.za/
-```
-
-The current SMS API version is:
-
-```text
-v1.0
-```
-
-SMS credentials are separate from WhatsApp credentials.
-
-SMS webhooks are also configured separately from WhatsApp webhooks.
-
----
-
-# 36. Sending SMS
-
-Use:
-
-```text
-endpoint=sms
-```
-
-Example:
+# 32. Sending SMS
 
 ```json
 {
@@ -1076,9 +817,7 @@ Example:
 
 ---
 
-# 37. SMS Success Response
-
-Example:
+# 33. SMS Success Response
 
 ```json
 {
@@ -1107,9 +846,7 @@ Example:
 
 ---
 
-# 38. SMS Error Response
-
-Example:
+# 34. SMS Error Response
 
 ```json
 {
@@ -1122,13 +859,9 @@ Example:
 
 ---
 
-# 39. SMS Message Webhook
+# 35. SMS Message Webhook
 
-SMS provides a message/response webhook.
-
-The SMS message webhook is `type="text"`.
-
-Example:
+SMS incoming messages use `type: text`.
 
 ```json
 {
@@ -1145,26 +878,17 @@ Example:
 }
 ```
 
-### SMS Webhook Fields
-
-| Field | Description |
-|---|---|
-| `id` | Gateway message identifier |
-| `mo_msg_id` | Mobile-originated message ID |
-| `charset` | Message character encoding |
-| `type` | Webhook type |
-| `sender` | SMS service sender |
-| `from` | Incoming sender number |
-| `name` | Sender name |
-| `message` | Received SMS text |
-| `state` | Application/chatbot state |
-| `memory` | Persistent memory data |
-
 ---
 
-# 40. SMS Status Webhook
+# 36. SMS Status Webhook
 
-After sending an SMS, UC Gateway sends a status webhook.
+Supported SMS DLR statuses are:
+
+* `sent`
+* `delivered`
+* `undelivered`
+* `queued`
+* `failed`
 
 Example:
 
@@ -1178,250 +902,369 @@ Example:
 }
 ```
 
-Supported SMS status values are:
-
-```text
-sent
-delivered
-undelivered
-queued
-failed
-```
-
 ---
 
-# 41. SMS Webhook Configuration
+# 37. SMS Webhook Configuration
 
-SMS webhooks are configured separately from WhatsApp webhooks.
-
-The SMS webhook configuration is managed through the UC Gateway portal.
+SMS webhooks are configured separately through the SMS Portal Settings.
 
 SMS supports:
 
-- Message/response webhook
-- Status webhook
+* Message webhook
+* Status webhook
 
 ---
 
-# 42. SMS Credentials
+# MoyaApp API
 
-SMS credentials are separate from WhatsApp credentials.
+# 38. Sending MoyaApp Messages
 
-SMS authentication credentials are generated through the UC Gateway portal.
+MoyaApp uses:
 
----
+```text
+endpoint=moyaapp
+```
 
-# 43. WhatsApp vs SMS
+MoyaApp uses API version:
 
-| Feature | WhatsApp | SMS |
-|---|---|---|
-| API Version | `v1.0` | `v1.0` |
-| Endpoint | `whatsapp` | `sms` |
-| Credentials | Separate | Separate |
-| Message Types | Multiple | Text |
-| Incoming Webhook | Yes | Yes |
-| Status Webhook | Yes | Yes |
-| Status Values | `sent`, `delivered`, `read` | `sent`, `delivered`, `undelivered`, `queued`, `failed` |
-| Webhook Configuration | Separate | Separate |
-| State | Supported | Included in webhook |
-| Memory | Supported | Included in webhook |
+```text
+v1.0
+```
+
+MoyaApp does **not** support `msg_id` when sending messages.
 
 ---
 
-# 44. General Success Response
-
-A successful API request uses:
+# 39. MoyaApp Text Message
 
 ```json
 {
-  "status": "success",
-  "results": {}
+  "endpoint": "moyaapp",
+  "action": "send",
+  "nid": 12345678,
+  "to": "27670826044",
+  "body": "Your verification code is: 4829"
 }
 ```
 
-WhatsApp success responses contain message and dispatch information such as the message ID, status, network and charge information.
-
 ---
 
-# 45. General Error Response
-
-An unsuccessful request uses:
+# 40. MoyaApp Buttons
 
 ```json
 {
-  "status": "error",
-  "messages": [
-    "Missing link"
+  "endpoint": "moyaapp",
+  "action": "send",
+  "type": "buttons",
+  "nid": 12345678,
+  "to": "27716629021",
+  "body": "How can we assist you today?",
+  "button": [
+    "Billing Inquiry",
+    "Technical Support"
   ]
 }
 ```
 
-The `messages` array contains the reported error messages.
+---
+
+# 41. MoyaApp Lists
+
+MoyaApp does **not** support list messages.
+
+List message types and list-specific parameters available on WhatsApp are not available for MoyaApp.
 
 ---
 
-# 46. HTTP Status Codes
+# 42. MoyaApp CTA
 
-| HTTP Code | Status | Description |
-|---|---|---|
-| `200` | Success | Request successfully processed |
-| `400` | Error | Invalid request or validation error |
-| `401` | Unauthorized | Authentication failure |
-| `429` | Rate Limited | Request threshold exceeded |
-| `500` | Server Error | Gateway processing error |
+MoyaApp does **not** support CTA messages.
+
+CTA message types and CTA-specific parameters available on WhatsApp are not available for MoyaApp.
 
 ---
 
-# 47. Typical WhatsApp Integration Flow
+# 43. MoyaApp Location Requests
+
+MoyaApp supports two location request types.
+
+## GPS Location Request
+
+**Type:**
+
+```text
+gps_location_request
+```
+
+This requests the user's current GPS location **without displaying an interactive map**.
+
+```json
+{
+  "endpoint": "moyaapp",
+  "action": "send",
+  "type": "gps_location_request",
+  "nid": 12345678,
+  "to": "27716629021",
+  "body": "Send your current location"
+}
+```
+
+## Location Request
+
+**Type:**
+
+```text
+location_request
+```
+
+This displays an **interactive map**.
+
+```json
+{
+  "endpoint": "moyaapp",
+  "action": "send",
+  "type": "location_request",
+  "nid": 12345678,
+  "to": "27716629021",
+  "body": "Select your location"
+}
+```
+
+---
+
+# 44. MoyaApp Media
+
+MoyaApp supports:
+
+* `image`
+* `document`
+* `audio`
+* `video`
+
+However, MoyaApp media sending is **not activated by default**.
+
+Clients must contact **XII Group** to activate MoyaApp media messaging.
+
+### Image Example
+
+```json
+{
+  "endpoint": "moyaapp",
+  "action": "send",
+  "type": "image",
+  "nid": 12345678,
+  "to": "27716629021",
+  "link": "https://domain.com/assets/banner.jpg",
+  "body": "Check out our latest release!"
+}
+```
+
+---
+
+# 45. MoyaApp Message Sending Notes
+
+MoyaApp supports multiple message types, including:
+
+* `text`
+* `buttons`
+* `location_request`
+* `gps_location_request`
+* `image`*
+* `document`*
+* `audio`*
+* `video`*
+
+`*` Requires media activation by XII Group.
+
+MoyaApp does not support `msg_id` when sending messages.
+
+---
+
+# 46. WhatsApp vs. MoyaApp vs. SMS Feature Comparison
+
+| Feature                     | WhatsApp                                                                                                        | MoyaApp                                                                     | SMS                                                    |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------ |
+| **API Version**             | `v1.0`                                                                                                          | `v1.0`                                                                      | `v1.0`                                                 |
+| **Endpoint Parameter**      | `whatsapp`                                                                                                      | `moyaapp`                                                                   | `sms`                                                  |
+| **Credentials**             | WhatsApp API Credentials                                                                                        | MoyaApp API Credentials                                                     | SMS API Credentials                                    |
+| **Supported Message Types** | text, templates, lists, cta, buttons, image, document, audio, video, location, location_request, keypad, pinpad | text, image, document, audio, video, location_request, gps_location_request | text                                                   |
+| **Supported DLR Statuses**  | `sent`, `delivered`, `read`                                                                                     | `sent`, `delivered`, `read`, `failed`                                       | `sent`, `delivered`, `undelivered`, `queued`, `failed` |
+| **Webhooks**                | Configured via WhatsApp Portal Settings                                                                         | Configured via MoyaApp Portal Settings                                      | Configured via SMS Portal Settings                     |
+| **Stateful Engine**         | Native `state` & `memory`                                                                                       | Native `state` & `memory`                                                   | Native `state` & `memory`                              |
+
+### Additional Channel Notes
+
+**WhatsApp**
+
+* Supports message replies using `msg_id`.
+* Incoming replies use `context`.
+* Supports WhatsApp templates.
+* Supports interactive messages and location requests.
+
+**MoyaApp**
+
+* Does not support `msg_id` when sending messages.
+* Supports `location_request` with an interactive map.
+* Supports `gps_location_request` without displaying an interactive map.
+* Media messaging requires activation by XII Group.
+* Supports native `state` and `memory`.
+
+**SMS**
+
+* Supports text messaging.
+* Supports `sent`, `delivered`, `undelivered`, `queued` and `failed` DLR statuses.
+* Uses separate SMS credentials.
+* Uses separately configured SMS message and status webhooks.
+* Supports native `state` and `memory`.
+
+---
+
+# 47. Integration Flow — WhatsApp
 
 ```text
 Application
-    |
-    | API request
-    v
+     |
+     | API Request
+     v
 UC Gateway
-    |
-    | WhatsApp message
-    v
+     |
+     | WhatsApp Message
+     v
 WhatsApp
-    |
-    | Status webhook
-    v
+     |
+     | Status Webhook
+     v
 Application
 ```
 
-For incoming messages:
+Incoming:
 
 ```text
 WhatsApp User
-    |
-    | Message
-    v
+     |
+     | Message
+     v
 UC Gateway
-    |
-    | Signed webhook
-    v
+     |
+     | Signed Webhook
+     v
 Application / Chatbot
-    |
-    | Optional chatbot response
-    v
-UC Gateway
 ```
-
-The chatbot response is optional and is only required when the receiving application is using the webhook as an automated chatbot interaction.
 
 ---
 
-# 48. Typical SMS Integration Flow
+# 48. Integration Flow — SMS
 
 ```text
 Application
-    |
-    | SMS API request
-    v
+     |
+     | SMS API Request
+     v
 UC Gateway
-    |
-    | SMS
-    v
+     |
+     | SMS
+     v
 Mobile Network
-    |
-    | Status webhook
-    v
+     |
+     | Status Webhook
+     v
 Application
 ```
 
-Incoming SMS:
+Incoming:
 
 ```text
 Mobile User
-    |
-    | SMS
-    v
+     |
+     | SMS
+     v
 UC Gateway
-    |
-    | SMS message webhook
-    v
+     |
+     | SMS Webhook
+     v
 Application
 ```
 
 ---
 
-# 49. Developer Resources
-
-Official developer examples and resources:
+# 49. Integration Flow — MoyaApp
 
 ```text
+Application
+     |
+     | MoyaApp API Request
+     v
+UC Gateway
+     |
+     | MoyaApp Message
+     v
+MoyaApp
+```
+
+---
+
+# 50. Integration Checklist
+
+Before integrating:
+
+* Create WhatsApp templates through the portal.
+* Retrieve the 8-digit `nid` from the portal.
+* Generate API credentials through the portal.
+* Configure channel-specific webhook URLs.
+* Configure status webhook URLs separately where applicable.
+* Use API version `v1.0`.
+* Use HTTPS.
+* Use Basic Authentication.
+* Use the correct endpoint:
+
+  * `whatsapp`
+  * `moyaapp`
+  * `sms`
+* Use the correct recipient MSISDN format.
+* Preserve the raw webhook JSON body.
+* Calculate webhook signatures from the complete raw JSON payload.
+* Do not reconstruct the JSON before signature calculation.
+* Validate `X-Uc-Signature`.
+* Validate `X-Uc-Nonce`.
+* Validate `X-Uc-Timestamp`.
+* Use constant-time signature comparison.
+* Use `context` for WhatsApp message replies received from users.
+* Use `msg_id` when replying to previously sent WhatsApp messages.
+* Do not use `msg_id` when sending MoyaApp messages.
+* Use `location_request` for interactive-map location selection.
+* Use `gps_location_request` on MoyaApp when requesting current GPS without an interactive map.
+* Contact XII Group to activate MoyaApp media messaging.
+* Track WhatsApp DLR statuses using the WhatsApp status webhook.
+* Track MoyaApp DLR statuses using the MoyaApp status webhook.
+* Track SMS DLR statuses using the SMS status webhook.
+
+---
+
+# 51. Developer Resources
+
+GitHub:
+
 https://github.com/xiigroup
-```
 
 ---
 
-# 50. API Summary
+# 52. Support
 
-## WhatsApp Send
+For:
 
-```text
-POST https://uc-api.xiigroup.co.za/
-```
+* API credentials
+* `nid` retrieval
+* WhatsApp templates
+* Webhook configuration
+* MoyaApp activation
+* MoyaApp media activation
+* API integration support
 
-Example:
-
-```json
-{
-  "endpoint": "whatsapp",
-  "action": "send",
-  "type": "text",
-  "nid": 12345678,
-  "to": "27716629021",
-  "body": "Hello"
-}
-```
-
-## SMS Send
-
-```text
-POST https://uc-api.xiigroup.co.za/
-```
-
-Example:
-
-```json
-{
-  "endpoint": "sms",
-  "action": "send",
-  "nid": 12345678,
-  "to": "27670826044",
-  "body": "Hello"
-}
-```
+use the UC Gateway portal or contact XII Group.
 
 ---
 
-# 51. Important Integration Notes
-
-1. The current API version is **`v1.0`**.
-2. The `nid` is an **8-digit internal Number ID**.
-3. WhatsApp and SMS use separate credentials.
-4. WhatsApp and SMS webhook configurations are separate.
-5. WhatsApp templates are created through the portal.
-6. `location_request` does not require latitude or longitude.
-7. An outgoing `msg_id` can be supplied when replying to a previous WhatsApp message.
-8. Normal incoming WhatsApp message replies use `context`.
-9. WhatsApp reaction webhooks retain `msg_id` to identify the message being reacted to.
-10. Incoming webhook requests contain `X-Uc-Nonce`, `X-Uc-Signature` and `X-Uc-Timestamp` headers.
-11. `X-Uc-Nonce` is a 32-character nonce.
-12. The webhook HMAC signature is calculated from the **complete raw JSON payload as received**.
-13. The JSON payload must not be reconstructed from individual fields before calculating the signature.
-14. The shared secret used for HMAC validation is obtained from the UC Gateway portal.
-15. Constant-time comparison should be used when comparing the calculated signature with `X-Uc-Signature`.
-16. `X-Uc-Nonce` and `X-Uc-Timestamp` provide additional verification data.
-17. Webhook `state` and `memory` provide chatbot/application context.
-18. Persistent `memory` can be updated or deleted.
-19. A normal webhook receiver does not have to return a chatbot response.
-20. An automated chatbot can respond with updated `state`, `message`, `memory`, `api` and `error`.
-21. If an automated chatbot encounters an error, the `error` field must contain the error.
-22. WhatsApp status values are `sent`, `delivered` and `read`.
-23. SMS status values are `sent`, `delivered`, `undelivered`, `queued` and `failed`.
-24. SMS message webhooks are `type="text"`.
-25. File webhooks can contain image, document, audio or video data.
-26. Sticker webhooks contain sticker media information.
+**UC Gateway API v1.0**
+**Author:** Sipho Selabe
+**Email:** [sg.selabe@xiigroup.co.za](mailto:sg.selabe@xiigroup.co.za)
+**GitHub:** https://github.com/xiigroup
