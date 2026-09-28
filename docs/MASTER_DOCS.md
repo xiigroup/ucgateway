@@ -10,7 +10,7 @@ UC Gateway is a messaging gateway supporting **WhatsApp, MoyaApp and SMS** throu
 
 GitHub:
 
-https://github.com/xiigroup
+[https://github.com/xiigroup](https://github.com/xiigroup/ucgateway/)
 
 ---
 
@@ -1244,7 +1244,7 @@ Before integrating:
 
 GitHub:
 
-https://github.com/xiigroup
+[https://github.com/xiigroup](https://github.com/xiigroup/ucgateway/)
 
 ---
 
