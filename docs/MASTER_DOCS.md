@@ -383,29 +383,7 @@ The user's location is returned through the incoming webhook.
 
 ---
 
-# 15. Keypad / PIN Pad
-
-Supported message types include:
-
-* `keypad`
-* `pinpad`
-
-Example:
-
-```json
-{
-  "endpoint": "whatsapp",
-  "action": "send",
-  "type": "pinpad",
-  "nid": 12345678,
-  "to": "27716629021",
-  "body": "Enter your PIN"
-}
-```
-
----
-
-# 16. WhatsApp Message Replies
+# 15. WhatsApp Message Replies
 
 The `msg_id` parameter can be supplied to reply to a previously sent WhatsApp message.
 
@@ -427,7 +405,7 @@ The `msg_id` parameter can be supplied to reply to a previously sent WhatsApp me
 
 ---
 
-# 17. Mark WhatsApp Messages as Read
+# 16. Mark WhatsApp Messages as Read
 
 Received WhatsApp messages can be marked as read.
 
@@ -444,7 +422,7 @@ Received WhatsApp messages can be marked as read.
 
 # WhatsApp Webhooks
 
-# 18. Incoming WhatsApp Webhooks
+# 17. Incoming WhatsApp Webhooks
 
 UC Gateway can send incoming WhatsApp events to the message webhook configured in the portal.
 
@@ -461,7 +439,7 @@ Supported incoming message types include:
 
 ---
 
-# 19. Webhook Headers
+# 18. Webhook Headers
 
 Every webhook includes the following headers.
 
@@ -483,7 +461,7 @@ X-Uc-Timestamp: 1789306231
 
 ---
 
-# 20. Webhook Signature Verification
+# 19. Webhook Signature Verification
 
 The webhook signature must be calculated using the **complete JSON payload exactly as received**.
 
@@ -518,7 +496,7 @@ If verification fails, reject the request as unauthorized.
 
 ---
 
-# 21. Text Webhook
+# 20. Text Webhook
 
 ```json
 {
@@ -535,7 +513,7 @@ If verification fails, reject the request as unauthorized.
 
 ---
 
-# 22. WhatsApp Message Context
+# 21. WhatsApp Message Context
 
 When an incoming WhatsApp message is a reply to a previously sent message, the webhook contains `context`.
 
@@ -560,7 +538,7 @@ When an incoming WhatsApp message is a reply to a previously sent message, the w
 
 ---
 
-# 23. Reaction Webhook
+# 22. Reaction Webhook
 
 Reaction webhooks retain `msg_id`.
 
@@ -581,7 +559,7 @@ Reaction webhooks retain `msg_id`.
 
 ---
 
-# 24. Location Webhook
+# 23. Location Webhook
 
 ```json
 {
@@ -603,7 +581,7 @@ Reaction webhooks retain `msg_id`.
 
 ---
 
-# 25. File Webhook
+# 24. File Webhook
 
 Files can be received as:
 
@@ -637,7 +615,7 @@ Example:
 
 ---
 
-# 26. File URL Format
+# 25. File URL Format
 
 All files received through the webhook use:
 
@@ -653,7 +631,7 @@ https://cdn.xiigroup.co.za/media/12345678/27603166427/image/2026/09/177652279013
 
 ---
 
-# 27. Sticker Webhook
+# 26. Sticker Webhook
 
 ```json
 {
@@ -678,7 +656,7 @@ https://cdn.xiigroup.co.za/media/12345678/27603166427/image/2026/09/177652279013
 
 ---
 
-# 28. State and Memory
+# 27. State and Memory
 
 All three channels support native:
 
@@ -730,7 +708,7 @@ The structure depends on the application or chatbot developer.
 
 ---
 
-# 29. Automated Chatbot Response
+# 28. Automated Chatbot Response
 
 A webhook receiver does not have to reply.
 
@@ -755,7 +733,7 @@ If the application is not an automated chatbot, no chatbot response is required.
 
 ---
 
-# 30. Chatbot Error Response
+# 29. Chatbot Error Response
 
 If an automated chatbot encounters an error:
 
@@ -773,7 +751,7 @@ The `error` field should contain the error experienced by the chatbot.
 
 ---
 
-# 31. WhatsApp Status Webhook
+# 30. WhatsApp Status Webhook
 
 After sending a WhatsApp message, UC Gateway sends a status webhook.
 
@@ -803,7 +781,7 @@ The WhatsApp status webhook URL is configured separately from the WhatsApp messa
 
 # SMS API
 
-# 32. Sending SMS
+# 31. Sending SMS
 
 ```json
 {
@@ -817,7 +795,7 @@ The WhatsApp status webhook URL is configured separately from the WhatsApp messa
 
 ---
 
-# 33. SMS Success Response
+# 32. SMS Success Response
 
 ```json
 {
@@ -846,7 +824,7 @@ The WhatsApp status webhook URL is configured separately from the WhatsApp messa
 
 ---
 
-# 34. SMS Error Response
+# 33. SMS Error Response
 
 ```json
 {
@@ -859,7 +837,7 @@ The WhatsApp status webhook URL is configured separately from the WhatsApp messa
 
 ---
 
-# 35. SMS Message Webhook
+# 34. SMS Message Webhook
 
 SMS incoming messages use `type: text`.
 
@@ -880,7 +858,7 @@ SMS incoming messages use `type: text`.
 
 ---
 
-# 36. SMS Status Webhook
+# 35. SMS Status Webhook
 
 Supported SMS DLR statuses are:
 
@@ -904,7 +882,7 @@ Example:
 
 ---
 
-# 37. SMS Webhook Configuration
+# 36. SMS Webhook Configuration
 
 SMS webhooks are configured separately through the SMS Portal Settings.
 
@@ -917,7 +895,7 @@ SMS supports:
 
 # MoyaApp API
 
-# 38. Sending MoyaApp Messages
+# 37. Sending MoyaApp Messages
 
 MoyaApp uses:
 
@@ -935,7 +913,7 @@ MoyaApp does **not** support `msg_id` when sending messages.
 
 ---
 
-# 39. MoyaApp Text Message
+# 38. MoyaApp Text Message
 
 ```json
 {
@@ -949,7 +927,7 @@ MoyaApp does **not** support `msg_id` when sending messages.
 
 ---
 
-# 40. MoyaApp Buttons
+# 39. MoyaApp Buttons
 
 ```json
 {
@@ -968,7 +946,7 @@ MoyaApp does **not** support `msg_id` when sending messages.
 
 ---
 
-# 41. MoyaApp Lists
+# 40. MoyaApp Lists
 
 MoyaApp does **not** support list messages.
 
@@ -976,7 +954,7 @@ List message types and list-specific parameters available on WhatsApp are not av
 
 ---
 
-# 42. MoyaApp CTA
+# 41. MoyaApp CTA
 
 MoyaApp does **not** support CTA messages.
 
@@ -984,7 +962,7 @@ CTA message types and CTA-specific parameters available on WhatsApp are not avai
 
 ---
 
-# 43. MoyaApp Location Requests
+# 42. MoyaApp Location Requests
 
 MoyaApp supports two location request types.
 
@@ -1032,7 +1010,7 @@ This displays an **interactive map**.
 
 ---
 
-# 44. MoyaApp Media
+# 43. MoyaApp Media
 
 MoyaApp supports:
 
@@ -1061,7 +1039,7 @@ Clients must contact **XII Group** to activate MoyaApp media messaging.
 
 ---
 
-# 45. MoyaApp Message Sending Notes
+# 44. MoyaApp Message Sending Notes
 
 MoyaApp supports multiple message types, including:
 
@@ -1080,14 +1058,14 @@ MoyaApp does not support `msg_id` when sending messages.
 
 ---
 
-# 46. WhatsApp vs. MoyaApp vs. SMS Feature Comparison
+# 45. WhatsApp vs. MoyaApp vs. SMS Feature Comparison
 
 | Feature                     | WhatsApp                                                                                                        | MoyaApp                                                                     | SMS                                                    |
 | --------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------ |
 | **API Version**             | `v1.0`                                                                                                          | `v1.0`                                                                      | `v1.0`                                                 |
 | **Endpoint Parameter**      | `whatsapp`                                                                                                      | `moyaapp`                                                                   | `sms`                                                  |
 | **Credentials**             | WhatsApp API Credentials                                                                                        | MoyaApp API Credentials                                                     | SMS API Credentials                                    |
-| **Supported Message Types** | text, templates, lists, cta, buttons, image, document, audio, video, location, location_request, keypad, pinpad | text, image, document, audio, video, location_request, gps_location_request | text                                                   |
+| **Supported Message Types** | text, templates, lists, cta, buttons, image, document, audio, video, location, location_request | text, image, document, audio, video, location_request, gps_location_request | text                                                   |
 | **Supported DLR Statuses**  | `sent`, `delivered`, `read`                                                                                     | `sent`, `delivered`, `read`, `failed`                                       | `sent`, `delivered`, `undelivered`, `queued`, `failed` |
 | **Webhooks**                | Configured via WhatsApp Portal Settings                                                                         | Configured via MoyaApp Portal Settings                                      | Configured via SMS Portal Settings                     |
 | **Stateful Engine**         | Native `state` & `memory`                                                                                       | Native `state` & `memory`                                                   | Native `state` & `memory`                              |
@@ -1119,7 +1097,7 @@ MoyaApp does not support `msg_id` when sending messages.
 
 ---
 
-# 47. Integration Flow — WhatsApp
+# 46. Integration Flow — WhatsApp
 
 ```text
 Application
@@ -1153,7 +1131,7 @@ Application / Chatbot
 
 ---
 
-# 48. Integration Flow — SMS
+# 47. Integration Flow — SMS
 
 ```text
 Application
@@ -1187,7 +1165,7 @@ Application
 
 ---
 
-# 49. Integration Flow — MoyaApp
+# 48. Integration Flow — MoyaApp
 
 ```text
 Application
@@ -1203,7 +1181,7 @@ MoyaApp
 
 ---
 
-# 50. Integration Checklist
+# 49. Integration Checklist
 
 Before integrating:
 
@@ -1240,7 +1218,7 @@ Before integrating:
 
 ---
 
-# 51. Developer Resources
+# 50. Developer Resources
 
 GitHub:
 
@@ -1248,7 +1226,7 @@ GitHub:
 
 ---
 
-# 52. Support
+# 51. Support
 
 For:
 
